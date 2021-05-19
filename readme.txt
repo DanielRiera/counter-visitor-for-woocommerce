@@ -3,7 +3,7 @@ Contributors: taxarpro, DanielRiera
 Donate link: https://paypal.me/taxarpro
 Tags: counter, woocommerce, visitor, live, visitor counter, counter visitor, realtime, counter, visitors, users counter
 Requires at least: 4.3
-Tested up to: 5.5.0
+Tested up to: 5.7.1
 Requires PHP: 5.0
 Stable tag: 1.2.0
 License: GPLv2 or later
@@ -60,6 +60,9 @@ The plugin can update the number of current visitors every x seconds, take into 
 Added the option for the plugin to add FontAwesome to your website, for example if your theme doesn't.
 
 == Changelog ==
+
+= 1.2.1 =
+* Upload Version Test with news WordPress Release
 
 = 1.2.0 =
 * New shortcode with **msgone** and **msgmore** parameters are included to  customize the message for each shortcode, see description for more information.
