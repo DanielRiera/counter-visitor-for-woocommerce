@@ -2,14 +2,16 @@
 /**
  * Plugin Name: Counter Visitor for Woocommerce
  * Description: Show number of visitors view a product on Woocommerce
- * Version: 1.2.0
+ * Version: 1.2.1
  * Donate link: https://paypal.me/taxarpro
  * Author: TaxarPro
  * Author URI: https://taxarpro.com
  * Text Domain: counter-visitor-for-woocommerce
  * Domain Path: /languages
- * WC tested up to: 4.0.1
- * Tested WP: 5.5.0
+ * WC requires at least: 3.0
+ * WC tested up to: 5.2.2
+ * Required WP: 5.0
+ * Tested WP: 5.7.1
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -23,7 +25,7 @@ define('WCVisitor_Fontawesome', get_option('_wcv_fontawesome', '0'));
 $uploaddir = wp_upload_dir();
 define('WCVisitor_TEMP_FILES', $uploaddir['basedir'] . '/wcvtemp/');
 define('WCVisitor_POSITION_SHOW', get_option('_wcv_position', 'woocommerce_after_add_to_cart_button'));
-define('WCVisitor_version', '1.1.4');
+define('WCVisitor_version', '1.2.1');
 
 
 require_once WCVisitor_PATH . 'includes/class.api.php';
