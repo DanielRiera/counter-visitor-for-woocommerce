@@ -2,16 +2,15 @@
 /**
  * Plugin Name: Counter Visitor for Woocommerce
  * Description: Show number of visitors view a product on Woocommerce
- * Version: 1.2.1
- * Donate link: https://paypal.me/taxarpro
- * Author: TaxarPro
- * Author URI: https://taxarpro.com
+ * Version: 1.2.2
+ * Author: Daniel Riera
+ * Author URI: https://danielriera.net
  * Text Domain: counter-visitor-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
  * WC tested up to: 5.2.2
  * Required WP: 5.0
- * Tested WP: 5.7.1
+ * Tested WP: 5.7.2
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
