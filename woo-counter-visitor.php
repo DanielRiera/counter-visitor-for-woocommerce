@@ -70,6 +70,55 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
 
             add_action( 'admin_notices', array($this, 'wcvisitor_notices_version') );
             add_action( 'admin_init', array($this, 'wcvisitor_notices_version_dismissed') );
+            register_activation_hook( __FILE__, array($this, 'wcvisitor_activate') );
+            register_deactivation_hook( __FILE__,  array($this, 'wcvisitor_deactivate') );
+            add_action( 'wcvisitor_delete_files', array($this, 'wcvisitor_delete_old_files'), 99, 2 );
+        }
+
+        function wcvisitor_activate() {
+            // Si no existe el evento, lo registramos
+            if( ! wp_next_scheduled( 'wcvisitor_delete_files' ) ) {
+                wp_schedule_event( current_time( 'timestamp' ), 'hourly', 'wcvisitor_delete_files', array(WCVisitor_TEMP_FILES, true) );
+            }
+        }
+
+        function wcvisitor_deactivate() {
+            wp_clear_scheduled_hook( 'wcvisitor_delete_files' );
+        }
+
+        function wcvisitor_delete_old_files($path = false, $delete = false) {
+            if(isset($_GET['debug']) && $_GET['debug'] == '1') {
+                $class = 'notice notice-error';
+                $message = __( 'Debug Mode, NOT COUNT FILES', 'counter-visitor-for-woocommerce' );
+                printf( '<div class="%s"><p>%s</p></div>', $class, $message );
+                return;
+            }
+            $size = 0;
+            if(defined( 'DOING_CRON' ) || current_user_can('administrator')) {
+                if(!$path) { $path = WCVisitor_TEMP_FILES; }
+                $ignore = array('.','..','cgi-bin','.DS_Store','index.php');
+                $files = scandir($path);
+                $now   = time();
+                foreach($files as $t) {
+                    if(in_array($t, $ignore)) continue;
+                    if (is_dir(rtrim($path, '/') . '/' . $t)) {
+                        $size += $this->wcvisitor_delete_old_files(rtrim($path, '/') . '/' . $t, $delete);
+                    } else {
+                        if(pathinfo($t)['extension'] == 'txt'){
+                            $filename = $path .'/' .  $t;
+                            if ($now - filemtime($filename) >= 300) {
+                                if($delete) {
+                                    unlink($filename);
+                                }
+                                $size++;
+                            }
+                            
+                        }
+                    }   
+                }
+            }
+
+            return $size;
         }
 
         function wcvisitor_notices_version() {
