@@ -1,6 +1,6 @@
 <?php
 if(!defined('ABSPATH')) { exit; }
-
+global $WCVISITOR_MAIN;
 /**Acciones */
 if(isset($_POST['action'])) {
     if ( isset($_POST['save_option_nonce']) && wp_verify_nonce(  $_POST['save_option_nonce'], 'wcv_nonce' ) ) {
@@ -52,7 +52,7 @@ if(isset($_POST['action'])) {
 
 
     if ( isset($_POST['action']) && isset($_POST['add_sub_nonce']) && $_POST['action'] == 'adsub' && wp_verify_nonce(  $_POST['add_sub_nonce'], 'wcv_nonce' ) ) {
-        $sub = wp_remote_post( 'https://tracker.taxarpro.com', [
+        $sub = wp_remote_post( 'https://mailing.danielriera.net', [
             'method'      => 'POST',
             'timeout'     => 2000,
             'redirection' => 5,
@@ -73,11 +73,24 @@ if(isset($_POST['action'])) {
             printf( '<div class="%s"><p>%s</p></div>', $class, $message );
         }else{
             $class = 'notice notice-success';
-            $message = __( 'Welcome to TaxarPro newsletter :)', 'counter-visitor-for-woocommerce' );
+            $message = __( 'Welcome newsletter :)', 'counter-visitor-for-woocommerce' );
             
             printf( '<div class="%s"><p>%s</p></div>', $class, $message );
 
             update_option('counter-visitor-newsletter' , '1');
+        }
+    }
+
+    if ( isset($_POST['action']) && isset($_POST['add_sub_nonce']) && $_POST['action'] == 'delete_old_files' && wp_verify_nonce(  $_POST['add_sub_nonce'], 'wcv_nonce' ) ) {
+        if(current_user_can('administrator')) {
+            $files_deleted = $WCVISITOR_MAIN->wcvisitor_delete_old_files(WCVisitor_TEMP_FILES, true);
+            $class = 'notice notice-success';
+            $message = $files_deleted . ' ' . __( 'files deleted success', 'counter-visitor-for-woocommerce' );
+            printf( '<div class="%s"><p>%s</p></div>', $class, $message );
+        }else{
+            $class = 'notice notice-error';
+            $message = __( 'Permission Failed, need administrator rol for delete old files', 'counter-visitor-for-woocommerce' );
+            printf( '<div class="%s"><p>%s</p></div>', $class, $message );
         }
     }
 }
@@ -129,7 +142,6 @@ form#new_subscriber input[type='submit'] {
                 <input type="hidden" name="n" value="<?=bloginfo('name')?>" />
                 <input type="hidden" name="w" value="<?=bloginfo('url')?>" />
                 <input type="hidden" name="g" value="1" />
-                <p><?=__('By clicking send you accept our ', 'counter-visitor-for-woocommerce')?> <a href="https://taxarpro.com/es/politica-privacidad/" target="_blank"><?= __('privacy policy', 'counter-visitor-for-woocommerce')?></a></p>
                 <input type="text" name="anotheremail" id="anotheremail" style="position: absolute; left: -5000px" tabindex="-1" autocomplete="off" />
             <div class="submit-wrapper">
             <input type="submit" name="commit" value="<?=__('Submit', 'counter-visitor-for-woocommerce')?>" class="button" data-disable-with="<?=__('Processing', 'counter-visitor-for-woocommerce')?>" />
@@ -140,23 +152,27 @@ form#new_subscriber input[type='submit'] {
         } //END Newsletter
     $tab = 'general';
     if($tab == 'general') {
-        
         $currentPosition = get_option('_wcv_position','woocommerce_after_add_to_cart_button');
+        
         ?>
 
         <!--Donate button-->
         <div style="">
-            <a href="https://bit.ly/2xGbfbV" target="_blank" style="text-decoration: none;
-    font-size: 18px;
-    border: 1px solid #333;
-    padding: 10px;
-    display: block;
-    width: fit-content;
-    border-radius: 10px;
-    background: #FFF;"><?=__('Do you want to contribute to the development of this plugin?','counter-visitor-for-woocommerce')?></a>
+            <a href="https://www.paypal.com/donate/?hosted_button_id=EZ67DG78KMXWQ" target="_blank" style="text-decoration: none;font-size: 18px;border: 1px solid #333;padding: 10px;display: block;width: fit-content;border-radius: 10px;background: #FFF;"><?=__('Buy a Coffe? :)','counter-visitor-for-woocommerce')?></a>
         </div>
-        <div style="background: #dbdbdb;color: #2b2b2b;text-align: center;padding: 16px;margin-top: 10px;border-radius: 10px;width: 50%;"><?=sprintf(__('<strong>New Free Plugin!</strong> <a href="%s" target="_blank">Badges for WooCommerce</a>, show custom badges for your products.</div>' , 'counter-visitor-for-woocommerce'), 'https://bit.ly/2L4Kukn') ?></div>
-
+        <div class="clear_site"> </div>
+            <?php
+            $oldFiles = $WCVISITOR_MAIN->wcvisitor_delete_old_files(WCVisitor_TEMP_FILES);
+            if($oldFiles > 0) {
+                echo '<form novalidate="novalidate" method="post">
+                    <h3>'.__('You can delete the old files generated more than 1 hour old','counter-visitor-for-woocommerce').'</h3>
+                    <input type="hidden" name="action" value="delete_old_files" />
+                    '.wp_nonce_field( 'wcv_nonce', 'add_sub_nonce' ).'
+                    <input class="button" type="submit" value="'.__('Delete old files','counter-visitor-for-woocommerce').' ('.$oldFiles.')" />
+                </form>';
+            }
+            ?>
+       
 
         <form method="post">
             <input type="hidden" name="action" value="save_options" />

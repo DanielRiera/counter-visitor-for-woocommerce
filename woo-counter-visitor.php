@@ -2,17 +2,15 @@
 /**
  * Plugin Name: Counter Visitor for Woocommerce
  * Description: Show number of visitors view a product on Woocommerce
- * Version: 1.2.2
+ * Version: 1.3.0
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
  * Text Domain: counter-visitor-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
- * WC tested up to: 5.2.2
+ * WC tested up to: 6.8.2
  * Required WP: 5.0
- * Tested WP: 5.7.2
- * License: GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * Tested WP: 6.0.1
  */
 
 if(!defined('ABSPATH')) { exit; }
@@ -24,7 +22,7 @@ define('WCVisitor_Fontawesome', get_option('_wcv_fontawesome', '0'));
 $uploaddir = wp_upload_dir();
 define('WCVisitor_TEMP_FILES', $uploaddir['basedir'] . '/wcvtemp/');
 define('WCVisitor_POSITION_SHOW', get_option('_wcv_position', 'woocommerce_after_add_to_cart_button'));
-define('WCVisitor_version', '1.2.1');
+define('WCVisitor_version', '1.3.0');
 
 
 require_once WCVisitor_PATH . 'includes/class.api.php';
@@ -70,6 +68,55 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
 
             add_action( 'admin_notices', array($this, 'wcvisitor_notices_version') );
             add_action( 'admin_init', array($this, 'wcvisitor_notices_version_dismissed') );
+            register_activation_hook( __FILE__, array($this, 'wcvisitor_activate') );
+            register_deactivation_hook( __FILE__,  array($this, 'wcvisitor_deactivate') );
+            add_action( 'wcvisitor_delete_files', array($this, 'wcvisitor_delete_old_files'), 99, 2 );
+        }
+
+        function wcvisitor_activate() {
+            // Si no existe el evento, lo registramos
+            if( ! wp_next_scheduled( 'wcvisitor_delete_files' ) ) {
+                wp_schedule_event( current_time( 'timestamp' ), 'hourly', 'wcvisitor_delete_files', array(WCVisitor_TEMP_FILES, true) );
+            }
+        }
+
+        function wcvisitor_deactivate() {
+            wp_clear_scheduled_hook( 'wcvisitor_delete_files' );
+        }
+
+        function wcvisitor_delete_old_files($path = false, $delete = false) {
+            if(isset($_GET['debug']) && $_GET['debug'] == '1') {
+                $class = 'notice notice-error';
+                $message = __( 'Debug Mode, NOT COUNT FILES', 'counter-visitor-for-woocommerce' );
+                printf( '<div class="%s"><p>%s</p></div>', $class, $message );
+                return;
+            }
+            $size = 0;
+            if(defined( 'DOING_CRON' ) || current_user_can('administrator')) {
+                if(!$path) { $path = WCVisitor_TEMP_FILES; }
+                $ignore = array('.','..','cgi-bin','.DS_Store','index.php');
+                $files = scandir($path);
+                $now   = time();
+                foreach($files as $t) {
+                    if(in_array($t, $ignore)) continue;
+                    if (is_dir(rtrim($path, '/') . '/' . $t)) {
+                        $size += $this->wcvisitor_delete_old_files(rtrim($path, '/') . '/' . $t, $delete);
+                    } else {
+                        if(pathinfo($t)['extension'] == 'txt'){
+                            $filename = $path .'/' .  $t;
+                            if ($now - filemtime($filename) >= 3600) {
+                                if($delete) {
+                                    unlink($filename);
+                                }
+                                $size++;
+                            }
+                            
+                        }
+                    }   
+                }
+            }
+
+            return $size;
         }
 
         function wcvisitor_notices_version() {
