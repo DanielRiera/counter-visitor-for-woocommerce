@@ -1,12 +1,11 @@
 === Counter live visitors for WooComerce ===
 Contributors: DanielRiera
+Donate Link: https://www.paypal.com/donate/?hosted_button_id=EZ67DG78KMXWQ
 Tags: counter, woocommerce, visitor, live, visitor counter, counter visitor, realtime, counter, visitors, users counter
 Requires at least: 4.3
-Tested up to: 5.7.2
+Tested up to: 6.0.1
 Requires PHP: 5.0
-Stable tag: 1.2.2
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Stable tag: 1.3.0
 
  
 == Description ==
@@ -63,6 +62,13 @@ The plugin can update the number of current visitors every x seconds, take into 
 Added the option for the plugin to add FontAwesome to your website, for example if your theme doesn't.
 
 == Changelog ==
+
+= 1.3.0 =
+* Delete old files from plugin options
+* Delete old files with WP Cron
+* Update version tested
+* Set WooCommerce version tested
+* Minor Fixes
 
 = 1.2.2 =
 * Thanks +1000 install message

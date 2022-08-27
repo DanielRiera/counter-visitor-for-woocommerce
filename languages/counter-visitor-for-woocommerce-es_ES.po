@@ -20,8 +20,8 @@ msgid "An error has occurred, try again."
 msgstr "Ha ocurrido un error, por favor inténtelo de nuevo."
 
 #: views/options.php:76
-msgid "Welcome to TaxarPro newsletter :)"
-msgstr "Bienvenid@ al newsletter de TaxarPro :)"
+msgid "Welcome newsletter :)"
+msgstr "Bienvenid@ al newsletter :)"
 
 #: views/options.php:88
 msgid "files deleted success"

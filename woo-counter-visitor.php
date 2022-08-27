@@ -2,17 +2,15 @@
 /**
  * Plugin Name: Counter Visitor for Woocommerce
  * Description: Show number of visitors view a product on Woocommerce
- * Version: 1.2.2
+ * Version: 1.3.0
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
  * Text Domain: counter-visitor-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
- * WC tested up to: 5.2.2
+ * WC tested up to: 6.8.2
  * Required WP: 5.0
- * Tested WP: 5.7.2
- * License: GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * Tested WP: 6.0.1
  */
 
 if(!defined('ABSPATH')) { exit; }
@@ -24,7 +22,7 @@ define('WCVisitor_Fontawesome', get_option('_wcv_fontawesome', '0'));
 $uploaddir = wp_upload_dir();
 define('WCVisitor_TEMP_FILES', $uploaddir['basedir'] . '/wcvtemp/');
 define('WCVisitor_POSITION_SHOW', get_option('_wcv_position', 'woocommerce_after_add_to_cart_button'));
-define('WCVisitor_version', '1.2.1');
+define('WCVisitor_version', '1.3.0');
 
 
 require_once WCVisitor_PATH . 'includes/class.api.php';
@@ -106,7 +104,7 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
                     } else {
                         if(pathinfo($t)['extension'] == 'txt'){
                             $filename = $path .'/' .  $t;
-                            if ($now - filemtime($filename) >= 300) {
+                            if ($now - filemtime($filename) >= 3600) {
                                 if($delete) {
                                     unlink($filename);
                                 }
