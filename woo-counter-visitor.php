@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Counter Visitor for Woocommerce
  * Description: Show number of visitors view a product on Woocommerce
- * Version: 1.3.0
+ * Version: 1.4.0
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
  * Text Domain: counter-visitor-for-woocommerce
@@ -22,9 +22,9 @@ define('WCVisitor_Fontawesome', get_option('_wcv_fontawesome', '0'));
 $uploaddir = wp_upload_dir();
 define('WCVisitor_TEMP_FILES', $uploaddir['basedir'] . '/wcvtemp/');
 define('WCVisitor_POSITION_SHOW', get_option('_wcv_position', 'woocommerce_after_add_to_cart_button'));
-define('WCVisitor_version', '1.3.0');
-
-
+define('WCVisitor_version', '1.4.0');
+define('WCVisitor_db_version', 1);
+require_once(WCVisitor_PATH . 'includes/class.db.php');
 require_once WCVisitor_PATH . 'includes/class.api.php';
 
 if( !class_exists( 'WCVisitor_MAIN' ) ) {
@@ -82,6 +82,8 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
 
         function wcvisitor_deactivate() {
             wp_clear_scheduled_hook( 'wcvisitor_delete_files' );
+
+            update_option('wcvisitor_db_version', 0);
         }
 
         function wcvisitor_delete_old_files($path = false, $delete = false) {
@@ -171,6 +173,9 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
         }
 
         function wcvisitor_load_textdomain(){
+
+            WCVisitorBD::install();
+            
             load_plugin_textdomain( 'counter-visitor-for-woocommerce', false, dirname( plugin_basename(__FILE__) ) . '/languages/' );
         }
         /**
@@ -179,20 +184,20 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
          * @return void
          */
         function wcvisitor_init() {
-            if(is_admin()) {
-                if (!is_dir(WCVisitor_TEMP_FILES)) {
-                    mkdir(WCVisitor_TEMP_FILES);
-                }
-                $emptyDirectory = $this->wcvisitor_is_empty_directory(WCVisitor_TEMP_FILES);
-                if ($emptyDirectory === true) {
-                    $folderName = 'users_'.wp_generate_password(8, false);
-                    update_option('_WCVisitor_folder_name', $folderName);
-                    mkdir(WCVisitor_TEMP_FILES .$folderName);
-                    $file = fopen(WCVisitor_TEMP_FILES .$folderName.'/index.php',"w");
-                    fwrite($file,"");
-                    fclose($file);
-                }
-            }
+            // if(is_admin()) {
+            //     if (!is_dir(WCVisitor_TEMP_FILES)) {
+            //         mkdir(WCVisitor_TEMP_FILES);
+            //     }
+            //     $emptyDirectory = $this->wcvisitor_is_empty_directory(WCVisitor_TEMP_FILES);
+            //     if ($emptyDirectory === true) {
+            //         $folderName = 'users_'.wp_generate_password(8, false);
+            //         update_option('_WCVisitor_folder_name', $folderName);
+            //         mkdir(WCVisitor_TEMP_FILES .$folderName);
+            //         $file = fopen(WCVisitor_TEMP_FILES .$folderName.'/index.php',"w");
+            //         fwrite($file,"");
+            //         fclose($file);
+            //     }
+            // }
         }
 
         function wcvisitor_menu() {
@@ -233,12 +238,16 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
 
         function wcvisitor_record() {
             global $post;
-            $folderName = WCVisitor_TEMP_FILES . get_option('_WCVisitor_folder_name');
+
+            $location = WC_Geolocation::geolocate_ip();
+            $country = $location['country'];
             $ip = $this->wcvisitor_getIP();
-            if (!is_dir($folderName .'/' . $post->ID)) {
-                mkdir($folderName .'/' . $post->ID);
-            }
-            file_put_contents ($folderName .'/' . $post->ID .'/' . $ip . '.txt', "0");
+            WCVisitorBD::record($post->ID, $ip, $country);
+            // $folderName = WCVisitor_TEMP_FILES . get_option('_WCVisitor_folder_name');
+            // if (!is_dir($folderName .'/' . $post->ID)) {
+            //     mkdir($folderName .'/' . $post->ID);
+            // }
+            // file_put_contents ($folderName .'/' . $post->ID .'/' . $ip . '.txt', "0");
         }
 
         function wcvisitor_show_js() {
@@ -332,20 +341,22 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
                 return $this->wcvisitor_show_div($data);
             }
             
-            $actualtime=date("U");
+            // $actualtime=date("U");
             $timeold= get_option('_wcv_timeout_limit',300);
-            $folderName = WCVisitor_TEMP_FILES . get_option('_WCVisitor_folder_name') . '/' . $product . '/';
-            $this->counter=0;
-            $dir = dir($folderName);
-            while($temp = $dir->read()){
-                if ($temp=="." or $temp==".."){continue;}
-                $filecreatedtime=date("U", filemtime($folderName.$temp));
-                if ($actualtime>($filecreatedtime+$timeold)){
-                        unlink($folderName.$temp);
-                }else{
-                        $this->counter++;
-                }
-            }
+            // $folderName = WCVisitor_TEMP_FILES . get_option('_WCVisitor_folder_name') . '/' . $product . '/';
+            // $this->counter=0;
+            // $dir = dir($folderName);
+            // while($temp = $dir->read()){
+            //     if ($temp=="." or $temp==".."){continue;}
+            //     $filecreatedtime=date("U", filemtime($folderName.$temp));
+            //     if ($actualtime>($filecreatedtime+$timeold)){
+            //             unlink($folderName.$temp);
+            //     }else{
+            //             $this->counter++;
+            //     }
+            // }
+
+            $this->counter = WCVisitorBD::get_visitors($product, $timeold);
 
             if($this->counter > 1) {
                 if($args && $args['msgmore'] !== false) {
