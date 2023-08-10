@@ -2,15 +2,15 @@
 /**
  * Plugin Name: Counter Visitor for Woocommerce
  * Description: Show number of visitors view a product on Woocommerce
- * Version: 1.3.0
+ * Version: 1.3.5
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
  * Text Domain: counter-visitor-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
- * WC tested up to: 6.8.2
+ * WC tested up to: 8.0.1
  * Required WP: 5.0
- * Tested WP: 6.0.1
+ * Tested WP: 6.3.0
  */
 
 if(!defined('ABSPATH')) { exit; }
@@ -22,7 +22,7 @@ define('WCVisitor_Fontawesome', get_option('_wcv_fontawesome', '0'));
 $uploaddir = wp_upload_dir();
 define('WCVisitor_TEMP_FILES', $uploaddir['basedir'] . '/wcvtemp/');
 define('WCVisitor_POSITION_SHOW', get_option('_wcv_position', 'woocommerce_after_add_to_cart_button'));
-define('WCVisitor_version', '1.3.0');
+define('WCVisitor_version', '1.3.5');
 
 
 require_once WCVisitor_PATH . 'includes/class.api.php';
@@ -71,6 +71,12 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
             register_activation_hook( __FILE__, array($this, 'wcvisitor_activate') );
             register_deactivation_hook( __FILE__,  array($this, 'wcvisitor_deactivate') );
             add_action( 'wcvisitor_delete_files', array($this, 'wcvisitor_delete_old_files'), 99, 2 );
+
+            add_action( 'before_woocommerce_init', function() {
+                if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+                    \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+                }
+            } );
         }
 
         function wcvisitor_activate() {
