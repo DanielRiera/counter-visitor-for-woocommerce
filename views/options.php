@@ -8,6 +8,13 @@ if(isset($_POST['action'])) {
            update_option('_wcv_timeout_limit',sanitize_text_field( $_POST['_wcv_timeout_limit'] ));
            update_option('_wcv_position',sanitize_text_field( $_POST['_wcv_position'] ));
            update_option('_wcv_icon',sanitize_text_field( $_POST['_wcv_icon'] ));
+           if( $_POST['_wcv_weight_block'] == '') {
+                //Prevent
+                $_POST['_wcv_weight_block'] = 0;
+           }
+           update_option('_wcv_weight_block',sanitize_text_field( $_POST['_wcv_weight_block'] ));
+           
+
            update_option('_wcv_message',sanitize_textarea_field( $_POST['_wcv_message'] ));
            update_option('_wcv_message_one',sanitize_textarea_field( $_POST['_wcv_message_one'] ));
             if(isset($_POST['_wcv_use_js'])) {
@@ -15,6 +22,19 @@ if(isset($_POST['action'])) {
             }else{
                 update_option('_wcv_use_js','0');
             }
+            if(isset($_POST['_wcvisitor_after_price'])) {
+                update_option('_wcvisitor_after_price','1');
+            }else{
+                update_option('_wcvisitor_after_price','0');
+            }
+
+            if(isset($_POST['_wcvisitor_only_one_hide'])) {
+                update_option('_wcvisitor_only_one_hide','1');
+            }else{
+                update_option('_wcvisitor_only_one_hide','0');
+            }
+            
+            
             if(isset($_POST['_wcv_fake_mode'])) {
                 update_option('_wcv_fake_mode','1');
             }else{
@@ -141,7 +161,7 @@ form#new_subscriber input[type='submit'] {
                 </div>
                 <input type="hidden" name="n" value="<?=bloginfo('name')?>" />
                 <input type="hidden" name="w" value="<?=bloginfo('url')?>" />
-                <input type="hidden" name="g" value="1" />
+                <input type="hidden" name="g" value="1,6" />
                 <input type="text" name="anotheremail" id="anotheremail" style="position: absolute; left: -5000px" tabindex="-1" autocomplete="off" />
             <div class="submit-wrapper">
             <input type="submit" name="commit" value="<?=__('Submit', 'counter-visitor-for-woocommerce')?>" class="button" data-disable-with="<?=__('Processing', 'counter-visitor-for-woocommerce')?>" />
@@ -189,6 +209,24 @@ form#new_subscriber input[type='submit'] {
                     </td>
                 </tr>
                 <tr valign="top">
+                    <th scope="row"><?=__('Show message after price', 'counter-visitor-for-woocommerce')?>
+                        <p class="description"><?=__('Active this options for show counter after price with | separated','counter-visitor-for-woocommerce')?></p>
+                    </th>
+                    <td>
+                        <label>
+                        <input type="checkbox" name="_wcvisitor_after_price" value="1" <?=checked('1', get_option('_wcvisitor_after_price', '0'))?> /></label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?=__('Hide counter if only one visitor', 'counter-visitor-for-woocommerce')?>
+                        <p class="description"><?=__('Active this options for hide counter when only one visitor on product','counter-visitor-for-woocommerce')?></p>
+                    </th>
+                    <td>
+                        <label>
+                        <input type="checkbox" name="_wcvisitor_only_one_hide" value="1" <?=checked('1', get_option('_wcvisitor_only_one_hide', '0'))?> /></label>
+                    </td>
+                </tr>
+                <tr valign="top">
                     <th scope="row"><?=__('Live Mode: Do you want to show users in real time?', 'counter-visitor-for-woocommerce')?>
                         <p class="description"><?=__('This option adds a call per user every X seconds, check its operation on your server, for security less than 5 seconds are not allowed. Use this option considering the resources of your server.','counter-visitor-for-woocommerce')?></p>
                     </th>
@@ -226,8 +264,20 @@ form#new_subscriber input[type='submit'] {
                                 <option value="woocommerce_before_single_product_summary" <?=selected('woocommerce_before_single_product_summary',$currentPosition);?>><?=__('Before product summary','counter-visitor-for-woocommerce')?></option>
                                 <option value="woocommerce_after_single_product_summary" <?=selected('woocommerce_after_single_product_summary',$currentPosition);?>><?=__('After product summary','counter-visitor-for-woocommerce')?></option>
                                 <option value="woocommerce_product_thumbnails" <?=selected('woocommerce_product_thumbnails',$currentPosition);?>><?=__('Product Thumbnail (may not work)','counter-visitor-for-woocommerce')?></option>
+                                <option value="woocommerce_single_product_summary" <?=selected('woocommerce_single_product_summary',$currentPosition);?>><?=__('After short description','counter-visitor-for-woocommerce')?></option>
+                                
+                                <option value="deactivate" <?=selected('deactivate',$currentPosition);?>><?=__('Deactivate','counter-visitor-for-woocommerce')?></option>
                             </select>
                         </label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?=__('Weight block', 'counter-visitor-for-woocommerce')?>
+                        <p class="description"><?=__('The heavier the weight, the lower the block is displayed','counter-visitor-for-woocommerce')?></p>
+                    </th>
+                    <td>
+                        <label>
+                        <input type="number" min="0" max="300" name="_wcv_weight_block" value="<?=get_option('_wcv_weight_block', '0')?>" /></label>
                     </td>
                 </tr>
                 <tr valign="top">

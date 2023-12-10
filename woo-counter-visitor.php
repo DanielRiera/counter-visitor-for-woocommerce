@@ -2,15 +2,15 @@
 /**
  * Plugin Name: Counter Visitor for Woocommerce
  * Description: Show number of visitors view a product on Woocommerce
- * Version: 1.3.5
+ * Version: 1.3.6
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
  * Text Domain: counter-visitor-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
- * WC tested up to: 8.0.1
+ * WC tested up to: 8.3.1
  * Required WP: 5.0
- * Tested WP: 6.3.0
+ * Tested WP: 6.4.2
  */
 
 if(!defined('ABSPATH')) { exit; }
@@ -19,10 +19,12 @@ define('WCVisitor_PATH', dirname(__FILE__).'/');
 define('WCVisitor_USE_JS', get_option('_wcv_use_js', '0'));
 define('WCVisitor_USE_Live', get_option('_wcv_live_mode', '0'));
 define('WCVisitor_Fontawesome', get_option('_wcv_fontawesome', '0'));
+define('WCVisitor_AfterPrice', get_option('_wcvisitor_after_price', '0'));
+define('WCVisitor_WeightBlock', get_option('_wcv_weight_block', 0));
 $uploaddir = wp_upload_dir();
 define('WCVisitor_TEMP_FILES', $uploaddir['basedir'] . '/wcvtemp/');
 define('WCVisitor_POSITION_SHOW', get_option('_wcv_position', 'woocommerce_after_add_to_cart_button'));
-define('WCVisitor_version', '1.3.5');
+define('WCVisitor_version', '1.3.6');
 
 
 require_once WCVisitor_PATH . 'includes/class.api.php';
@@ -40,7 +42,9 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
             'woocommerce_product_meta_end' => 'div.product_meta|after',
             'woocommerce_before_single_product_summary' => 'div.woocommerce-notices-wrapper|after',
             'woocommerce_after_single_product_summary' => 'div.woocommerce-tabs|after',
+            'woocommerce_single_product_summary' => 'div.woocommerce-product-details__short-description|inside',
             'woocommerce_product_thumbnails' => 'div.woocommerce-product-gallery|inside',
+            'deactivate' => 'false'
         );
     
         function __construct(){
@@ -49,7 +53,9 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
             add_action('wp_loader', array($this, 'wcvisitor_cookie'));
             add_action('woocommerce_before_single_product', array($this, 'wcvisitor_record'));
             if(WCVisitor_USE_JS == '0') {
-                add_action(WCVisitor_POSITION_SHOW, array($this, 'wcvisitor_show'));
+                if(WCVisitor_POSITION_SHOW != 'deactivate') {
+                    add_action(WCVisitor_POSITION_SHOW, array($this, 'wcvisitor_show'), intval(WCVisitor_WeightBlock));
+                }
             }else{
                 add_action( 'wp_footer', array($this, 'wcvisitor_show_js'), 99 );
             }
@@ -72,11 +78,25 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
             register_deactivation_hook( __FILE__,  array($this, 'wcvisitor_deactivate') );
             add_action( 'wcvisitor_delete_files', array($this, 'wcvisitor_delete_old_files'), 99, 2 );
 
+            if(WCVisitor_AfterPrice == '1') {
+                add_filter( 'woocommerce_get_price_html', array($this, 'wcvisitor_after_price_counter') );
+            }
+
             add_action( 'before_woocommerce_init', function() {
                 if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
                     \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
                 }
             } );
+        }
+
+        function wcvisitor_after_price_counter( $price ) {
+            global $product;
+
+            $text = $this->wcvisitor_get_block($product->ID, array('onlytext' => true));
+            if($text) {
+                $price .= " | {$text}";
+            }
+            return $price;
         }
 
         function wcvisitor_activate() {
@@ -316,18 +336,26 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
                 }
 
                 if($this->counter > 1) {
-                    if($args && $args['msgmore'] !== false) {
+                    if($args  and isset($args["msgone"]) and $args['msgmore'] !== false) {
                         $msg = $args['msgmore'];
                     }else{
                         $msg = get_option('_wcv_message', __('%n people are viewing this product'));
                     }
                     $msg = str_replace('%n','<span class="wcvisitor_num">'.$this->counter.'</span>', $msg);
                 }else{
-                    if($args && $args['msgone'] !== false) {
+                    if($args and isset($args["msgone"]) and $args['msgone'] !== false) {
                         $msg = $args['msgone'];
                     }else{
+                        $this->counter = 1;
                         $msg = get_option('_wcv_message_one', __('<span class="wcvisitor_num">1</span> user are viewing this product'));
                     }
+                }
+                
+                if(get_option('_wcvisitor_only_one_hide', '0') == '1' and $this->counter == 1) {
+                    return false;
+                }
+                if($args and in_array("onlytext", $args)) {
+                    return "<span class='wcv-only-text'>{$msg}<span>";
                 }
 
                 $data = array(
@@ -354,7 +382,7 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
             }
 
             if($this->counter > 1) {
-                if($args && $args['msgmore'] !== false) {
+                if($args  and isset($args["msgone"]) and $args['msgmore'] !== false) {
                     $msg = $args['msgmore'];
                 }else{
                     $msg = get_option('_wcv_message', __('%n people are viewing this product'));
@@ -362,15 +390,22 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
                 $msg = str_replace('%n','<span class="wcvisitor_num">'.$this->counter.'</span>', $msg);
             }else{
 
-                if($args && $args['msgone'] !== false) {
+                if($args  and isset($args["msgone"]) and $args['msgone'] !== false) {
                     $msg = $args['msgone'];
                 }else{
                     $msg = get_option('_wcv_message_one', __('<span class="wcvisitor_num">1</span> user are viewing this product'));
                     /**
                      * @since 1.1.2
                      */
+                    $this->counter = 1;
                     $msg = str_replace('1','<span class="wcvisitor_num">1</span>', $msg);
                 }
+            }
+            if(get_option('_wcvisitor_only_one_hide', '0') == '1' and $this->counter == 1) {
+                return false;
+            }
+            if($args and in_array("onlytext", $args)) {
+                return "<span class='wcv-only-text'>{$msg}<span>";
             }
 
             $data = array(

@@ -1,11 +1,11 @@
-=== Counter live visitors for WooComerce ===
+=== Counter live visitors for WooCommerce ===
 Contributors: DanielRiera
 Donate Link: https://www.paypal.com/donate/?hosted_button_id=EZ67DG78KMXWQ
 Tags: counter, woocommerce, visitor, live, visitor counter, counter visitor, realtime, counter, visitors, users counter
 Requires at least: 4.3
-Tested up to: 6.3.0
+Tested up to: 6.4.2
 Requires PHP: 5.0
-Stable tag: 1.3.5
+Stable tag: 1.3.6
 
  
 == Description ==
@@ -61,7 +61,20 @@ The plugin can update the number of current visitors every x seconds, take into 
 
 Added the option for the plugin to add FontAwesome to your website, for example if your theme doesn't.
 
+= Weight Block Option =
+
+The heavier the weight, the lower the block is displayed
+
 == Changelog ==
+
+= 1.3.6 =
+* New option for add counter after price XXX $ | 1 user are viewing this product, for this deactivate counter on other places (Deactivate option on positions).
+* Add after Short description position
+* Add deactivate position
+* Add weight option for block (Read Description)
+* Add option for hide if only one visitor
+* Fix Warnings
+* Minor Fixes
 
 = 1.3.5 =
 * High-Performance Order Storage (HPOS) Compatibility

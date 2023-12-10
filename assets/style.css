@@ -18,3 +18,8 @@
 .wcv-message.wcv-animation-on {
     transform: scale(1.1);
 }
+
+.wcv-only-text {
+    color: #333;
+    font-size: 14px;
+}
