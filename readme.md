@@ -6,6 +6,7 @@ Requires at least: 4.3
 Tested up to: 6.8.2
 Requires PHP: 5.0
 Stable tag: 1.3.8
+License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Show user count on product
