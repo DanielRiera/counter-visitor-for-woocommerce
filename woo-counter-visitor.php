@@ -2,15 +2,15 @@
 /**
  * Plugin Name: Counter Visitor for Woocommerce
  * Description: Show number of visitors view a product on Woocommerce
- * Version: 1.3.6
+ * Version: 1.3.7
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
  * Text Domain: counter-visitor-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 3.0
- * WC tested up to: 8.3.1
+ * WC tested up to: 10.0.4
  * Required WP: 5.0
- * Tested WP: 6.4.2
+ * Tested WP: 6.8.2
  */
 
 if(!defined('ABSPATH')) { exit; }
@@ -368,7 +368,7 @@ if( !class_exists( 'WCVisitor_MAIN' ) ) {
             
             $actualtime=date("U");
             $timeold= get_option('_wcv_timeout_limit',300);
-            $folderName = WCVisitor_TEMP_FILES . get_option('_WCVisitor_folder_name') . '/' . $product . '/';
+            $folderName = WCVisitor_TEMP_FILES . get_option('_WCVisitor_folder_name') . '/' . absint($product) . '/';
             $this->counter=0;
             $dir = dir($folderName);
             while($temp = $dir->read()){

@@ -5,7 +5,6 @@ var WCVisitor = {
         var self = this;
         if(!isReload) { var isReload = false;}
         if(self.loading) {
-            console.log("Loading is true");
             return;
         }
         self.loading = true;
@@ -47,8 +46,7 @@ var WCVisitor = {
     reload: function(product, timeToReload){
         var self = this;
         setInterval(function(){
-            console.log("Conectado con LIVE MODE");
-            self.show(product, false, true);           
+            self.show(product, false, true);
         }, parseInt(1000 * parseInt(timeToReload)));
     }
 

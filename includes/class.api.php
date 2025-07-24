@@ -8,15 +8,17 @@ if( !class_exists( 'WCVisitor_API' ) ) {
         }
         function WCVisitor_get_counter() {
             global $WCVISITOR_MAIN;
-            $product = sanitize_text_field( $_POST['product'] );
-            $string = $WCVISITOR_MAIN->wcvisitor_show_api($product);
-            if(!$string) {
-                $res = array();
+            $res = array();
+            $product = absint($_POST['product']);
+            if($product > 0) {
+                $string = $WCVISITOR_MAIN->wcvisitor_show_api($product);
+                if($string) {
+                    $res = array(
+                        'html' => $string,
+                        'counter' => $WCVISITOR_MAIN->wcvisitor_get_counter()
+                    );
+                }
             }
-            $res = array(
-                'html' => $string,
-                'counter' => $WCVISITOR_MAIN->wcvisitor_get_counter()
-            );
             wp_send_json($res);
             wp_die();
         }
