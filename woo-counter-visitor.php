@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Counter Visitor for Woocommerce
  * Description: Show number of visitors view a product on Woocommerce
- * Version: 1.3.8
+ * Version: 1.3.9
  * Author: Daniel Riera
  * Author URI: https://danielriera.net
  * Text Domain: counter-visitor-for-woocommerce
@@ -11,6 +11,8 @@
  * WC tested up to: 10.0.4
  * Required WP: 5.0
  * Tested WP: 6.8.2
+ *  License: GPLv3
+ *  License URI: https://www.gnu.org/licenses/gpl-3.0.html
  */
 
 if(!defined('ABSPATH')) { exit; }
