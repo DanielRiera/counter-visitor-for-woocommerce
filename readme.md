@@ -1,12 +1,14 @@
 === Counter live visitors for WooCommerce ===
 Contributors: DanielRiera
 Donate Link: https://www.paypal.com/donate/?hosted_button_id=EZ67DG78KMXWQ
-Tags: counter, woocommerce, visitor, live, visitor counter, counter visitor, realtime, counter, visitors, users counter
+Tags: counter, woocommerce, visitor, live, visitor counter
 Requires at least: 4.3
 Tested up to: 6.8.2
 Requires PHP: 5.0
-Stable tag: 1.3.7
+Stable tag: 1.3.8
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
+Show user count on product
  
 == Description ==
 
