@@ -3,9 +3,9 @@ Contributors: DanielRiera
 Donate Link: https://www.paypal.com/donate/?hosted_button_id=EZ67DG78KMXWQ
 Tags: counter, woocommerce, visitor, live, visitor counter
 Requires at least: 4.3
-Tested up to: 6.8.2
+Tested up to: 6.9.4
 Requires PHP: 5.0
-Stable tag: 1.3.9
+Stable tag: 1.4.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -69,6 +69,13 @@ Added the option for the plugin to add FontAwesome to your website, for example 
 The heavier the weight, the lower the block is displayed
 
 == Changelog ==
+
+= 1.4.0 =
+* Replace legacy file-based visitor storage with database storage.
+* Add visitor statistics screen with filters and pagination.
+* Add legacy storage notice with safe cleanup action for old visitor files.
+* Improve options page design and update translations.
+* Minor fixes
 
 = 1.3.7 =
 * Fix Vulnerability detected
@@ -141,5 +148,4 @@ Español (Spanish), English (English US)
 == Upgrade Notice ==
 = 1.0.9 =
 Style file added, you can overwrite this style with theme customizer :)
-
 

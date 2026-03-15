@@ -1,30 +1,16 @@
 <?php
-if(!defined('ABSPATH')) { exit; }
-if( !class_exists( 'WCVisitor_API' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+if ( ! class_exists( 'WCVisitor_API' ) ) {
     class WCVisitor_API {
-        function __construct() {
-            add_action( 'wp_ajax_nopriv_wcvisitor_get_counter', array($this, 'WCVisitor_get_counter') );
-            add_action( 'wp_ajax_wcvisitor_get_counter', array($this, 'WCVisitor_get_counter') );
-        }
-        function WCVisitor_get_counter() {
-            global $WCVISITOR_MAIN;
-            $res = array();
-            $product = absint($_POST['product']);
-            if($product > 0) {
-                $string = $WCVISITOR_MAIN->wcvisitor_show_api($product);
-                if($string) {
-                    $res = array(
-                        'html' => $string,
-                        'counter' => $WCVISITOR_MAIN->wcvisitor_get_counter()
-                    );
-                }
-            }
-            wp_send_json($res);
-            wp_die();
+        public function get_counter() {
+            return wcvisitor()->get_service()->get_counter();
         }
 
-        
+        public function render( $product_id ) {
+            return wcvisitor()->get_service()->render_counter_block( $product_id );
+        }
     }
-    $WCVisitor_API = new WCVisitor_API();
 }
-?>
