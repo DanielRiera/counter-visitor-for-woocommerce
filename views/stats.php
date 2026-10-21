@@ -275,6 +275,8 @@ $is_live      = in_array( $period, array( '2m', '5m' ), true );
                 <div style="font-size: 40px; padding-bottom: 15px"><?=esc_html__( 'Visitor Stats', 'counter-visitor-for-woocommerce' )?></div>
                 <span style="font-size: 20px; font-style: italic; padding-bottom: 10px">by Counter live visitors for WooCommerce</span>
                 <p><?=esc_html__( 'Real statistics are only stored when Fake Mode is disabled. Use this panel to identify products with the most traffic and recurring interest.', 'counter-visitor-for-woocommerce' )?></p>
+                <p><?=esc_html( sprintf( __( 'Statistics retention: %d days. Older visits are deleted automatically.', 'counter-visitor-for-woocommerce' ), $this->settings->get_retention_days() ) )?></p>
+                <p><?=esc_html( sprintf( __( 'Archived page views: %s. Daily totals are kept after individual visits are deleted.', 'counter-visitor-for-woocommerce' ), number_format_i18n( $this->service->get_archived_views() ) ) )?></p>
             </div>
             <div class="wcv-stats-period-chip"><?=esc_html( $period_label )?></div>
         </div>

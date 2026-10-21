@@ -363,6 +363,17 @@ $currentPosition = get_option( '_wcv_position', 'woocommerce_after_add_to_cart_b
                         </tr>
                         <tr>
                             <th scope="row">
+                                <strong><?=esc_html__('Statistics retention (days)', 'counter-visitor-for-woocommerce')?></strong>
+                                <p class="description"><?=esc_html__('Visits older than this period are deleted automatically. Statistics only include retained visits. Minimum 30 days.', 'counter-visitor-for-woocommerce')?></p>
+                            </th>
+                            <td>
+                                <div class="wcv-options-control">
+                                    <input type="number" min="30" name="_wcv_retention_days" value="<?=esc_attr($this->settings->get_retention_days())?>" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">
                                 <strong><?=__('Position', 'counter-visitor-for-woocommerce')?></strong>
                             </th>
                             <td>
@@ -450,7 +461,7 @@ $currentPosition = get_option( '_wcv_position', 'woocommerce_after_add_to_cart_b
                             </th>
                             <td>
                                 <div class="wcv-options-control">
-                                    <textarea name="_wcv_message"><?=esc_textarea(get_option('_wcv_message', __('%n people are viewing this product')))?></textarea>
+                                    <textarea name="_wcv_message"><?=esc_textarea($this->settings->get(WCVisitor_Settings::OPTION_MESSAGE))?></textarea>
                                 </div>
                             </td>
                         </tr>
@@ -460,7 +471,7 @@ $currentPosition = get_option( '_wcv_position', 'woocommerce_after_add_to_cart_b
                             </th>
                             <td>
                                 <div class="wcv-options-control">
-                                    <textarea name="_wcv_message_one"><?=esc_textarea(get_option('_wcv_message_one', __('1 user are viewing this product')))?></textarea>
+                                    <textarea name="_wcv_message_one"><?=esc_textarea($this->settings->get(WCVisitor_Settings::OPTION_MESSAGE_ONE))?></textarea>
                                 </div>
                             </td>
                         </tr>

@@ -11,6 +11,7 @@ class WCVisitor_Settings {
     const OPTION_WEIGHT_BLOCK = '_wcv_weight_block';
     const OPTION_POSITION = '_wcv_position';
     const OPTION_TIMEOUT = '_wcv_timeout_limit';
+    const OPTION_RETENTION = '_wcv_retention_days';
     const OPTION_ICON = '_wcv_icon';
     const OPTION_MESSAGE = '_wcv_message';
     const OPTION_MESSAGE_ONE = '_wcv_message_one';
@@ -29,6 +30,7 @@ class WCVisitor_Settings {
         self::OPTION_WEIGHT_BLOCK => 0,
         self::OPTION_POSITION     => 'woocommerce_after_add_to_cart_button',
         self::OPTION_TIMEOUT      => 300,
+        self::OPTION_RETENTION    => 90,
         self::OPTION_ICON         => 'dashicons dashicons-visibility',
         self::OPTION_MESSAGE      => '%n people are viewing this product',
         self::OPTION_MESSAGE_ONE  => '1 user are viewing this product',
@@ -43,6 +45,12 @@ class WCVisitor_Settings {
     public function get( $key ) {
         $default = isset( $this->defaults[ $key ] ) ? $this->defaults[ $key ] : '';
 
+        if ( self::OPTION_MESSAGE === $key ) {
+            $default = __( '%n people are viewing this product', 'counter-visitor-for-woocommerce' );
+        } elseif ( self::OPTION_MESSAGE_ONE === $key ) {
+            $default = __( '1 user are viewing this product', 'counter-visitor-for-woocommerce' );
+        }
+
         return get_option( $key, $default );
     }
 
@@ -56,6 +64,10 @@ class WCVisitor_Settings {
 
     public function get_live_seconds() {
         return max( 5, absint( $this->get( self::OPTION_LIVE_SECONDS ) ) );
+    }
+
+    public function get_retention_days() {
+        return max( 30, absint( $this->get( self::OPTION_RETENTION ) ) );
     }
 
     public function get_weight() {

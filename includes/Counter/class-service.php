@@ -59,7 +59,7 @@ class WCVisitor_Counter_Service {
         return $this->settings->get_live_seconds();
     }
 
-    public function record_product_view( $product_id ) {
+    public function record_product_view( $product_id, $refresh = false ) {
         $product_id = absint( $product_id );
 
         if ( ! $product_id || $this->settings->is_enabled( WCVisitor_Settings::OPTION_FAKE_MODE ) ) {
@@ -72,7 +72,20 @@ class WCVisitor_Counter_Service {
             return;
         }
 
-        $this->repository->record_visit( $product_id, $visitor_hash, gmdate( 'Y-m-d H:i:s' ) );
+        $this->repository->record_visit( $product_id, $visitor_hash, gmdate( 'Y-m-d H:i:s' ), $refresh );
+    }
+
+    public function prepare_fake_counter( $product_id ) {
+        if ( $this->settings->is_enabled( WCVisitor_Settings::OPTION_FAKE_MODE ) ) {
+            $this->get_fake_counter( absint( $product_id ) );
+        }
+    }
+
+    public function cleanup() {
+        return $this->repository->delete_expired(
+            gmdate( 'Y-m-d 00:00:00', time() - $this->settings->get_retention_days() * DAY_IN_SECONDS ),
+            gmdate( 'Y-m-d H:i:s', time() - $this->settings->get_timeout() )
+        );
     }
 
     public function render_counter_block( $product_id, $args = array() ) {
@@ -101,20 +114,24 @@ class WCVisitor_Counter_Service {
         }
 
         if ( $this->settings->is_enabled( WCVisitor_Settings::OPTION_ONLY_ONE_HIDE ) && 1 === $this->counter ) {
-            return false;
+            return ! empty( $args['onlytext'] ) ? '' : $this->wrap_counter( $product_id, '', $args );
         }
 
         if ( ! empty( $args['onlytext'] ) ) {
             return '<span class="wcv-only-text">' . wp_kses_post( $message ) . '</span>';
         }
 
-        return $this->build_counter_markup(
+        return $this->wrap_counter( $product_id, $this->build_counter_markup(
             array(
                 'product' => $product_id,
                 'icon'    => $this->settings->get_icon(),
                 'msg'     => $message,
             )
-        );
+        ), $args );
+    }
+
+    private function wrap_counter( $product_id, $html, $args ) {
+        return '<div class="wcv-container wcv-container-' . absint( $product_id ) . '" data-msgone="' . esc_attr( $args['msgone'] ?? '' ) . '" data-msgmore="' . esc_attr( $args['msgmore'] ?? '' ) . '">' . $html . '</div>';
     }
 
     public function get_after_price_text( $product_id ) {
@@ -138,21 +155,26 @@ class WCVisitor_Counter_Service {
 
     public function get_stats( $period = 'all', $limit = 20, $page = 1 ) {
         $from_gmt = $this->get_period_start( $period );
+        $live     = in_array( $period, array( '2m', '5m' ), true );
         $page     = max( 1, absint( $page ) );
         $limit    = max( 1, absint( $limit ) );
         $offset   = ( $page - 1 ) * $limit;
 
         return array(
-            'rows'         => $this->repository->get_top_products( $from_gmt, $limit, $offset ),
-            'total'        => $this->repository->count_top_products( $from_gmt ),
+            'rows'         => $this->repository->get_top_products( $from_gmt, $limit, $offset, $live ),
+            'total'        => $this->repository->count_top_products( $from_gmt, $live ),
             'per_page'     => $limit,
             'current_page' => $page,
-            'summary'      => $this->repository->get_period_summary( $from_gmt ),
+            'summary'      => $this->repository->get_period_summary( $from_gmt, $live ),
         );
     }
 
     public function get_stats_summary( $product_id, $period = 'all' ) {
-        return $this->repository->get_product_stats( $product_id, $this->get_period_start( $period ) );
+        return $this->repository->get_product_stats( $product_id, $this->get_period_start( $period ), in_array( $period, array( '2m', '5m' ), true ) );
+    }
+
+    public function get_archived_views() {
+        return $this->repository->get_archived_views();
     }
 
     private function get_period_start( $period ) {
@@ -174,13 +196,17 @@ class WCVisitor_Counter_Service {
     private function get_fake_counter( $product_id ) {
         $cookie_name = 'pro_wcv_' . $product_id;
 
-        if ( isset( $_COOKIE[ $cookie_name ] ) ) {
-            return absint( wp_unslash( $_COOKIE[ $cookie_name ] ) );
+        list( $from, $to ) = $this->settings->get_fake_range();
+
+        if ( isset( $_COOKIE[ $cookie_name ] ) && is_scalar( $_COOKIE[ $cookie_name ] ) ) {
+            $value = (string) wp_unslash( $_COOKIE[ $cookie_name ] );
+            if ( ctype_digit( $value ) && (float) $value >= $from && (float) $value <= $to ) {
+                return (int) $value;
+            }
         }
 
-        list( $from, $to ) = $this->settings->get_fake_range();
         $counter           = wp_rand( $from, $to );
-        $expiration        = time() + ( $this->should_use_live_mode() ? 5 : 60 );
+        $expiration        = time() + 25 * MINUTE_IN_SECONDS;
 
         $this->set_cookie( $cookie_name, (string) $counter, $expiration );
 

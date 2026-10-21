@@ -431,3 +431,17 @@ msgstr ""
 #: views/stats.php:403
 msgid "Next"
 msgstr ""
+
+msgid "Statistics retention (days)"
+msgstr ""
+
+msgid "Visits older than this period are deleted automatically. Statistics only include retained visits. Minimum 30 days."
+msgstr ""
+
+#, php-format
+msgid "Statistics retention: %d days. Older visits are deleted automatically."
+msgstr ""
+
+#, php-format
+msgid "Archived page views: %s. Daily totals are kept after individual visits are deleted."
+msgstr ""

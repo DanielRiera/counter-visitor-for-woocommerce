@@ -2,10 +2,13 @@
 Contributors: DanielRiera
 Donate Link: https://www.paypal.com/donate/?hosted_button_id=EZ67DG78KMXWQ
 Tags: counter, woocommerce, visitor, live, visitor counter
-Requires at least: 4.3
-Tested up to: 6.9.4
-Requires PHP: 5.0
-Stable tag: 1.4.0
+Requires at least: 6.8
+Tested up to: 7.1.3
+Requires PHP: 8.0
+Requires Plugins: woocommerce
+WC requires at least: 3.0
+WC tested up to: 10.6.1
+Stable tag: 1.4.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -69,6 +72,15 @@ Added the option for the plugin to add FontAwesome to your website, for example 
 The heavier the weight, the lower the block is displayed
 
 == Changelog ==
+
+= 1.4.1 =
+* Fix visitor tracking with cache enabled and refresh activity in Live Mode without inflating page views.
+* Fix Live Mode recovery after connection errors and restore counters hidden when only one visitor is present.
+* Preserve custom shortcode messages and update counters displayed after the price.
+* Set fake visitor cookies before page output, keep values for 25 minutes and validate the configured range.
+* Add configurable statistics retention (90 days by default, minimum 30) and scheduled cleanup in batches. Older visits are aggregated into daily totals before deletion; detailed statistics cover retained visits only.
+* Declare WooCommerce dependency and PHP 8.0 requirement, and prevent errors when WooCommerce is inactive.
+* Translate default visitor messages and update Spanish translations.
 
 = 1.4.0 =
 * Replace legacy file-based visitor storage with database storage.

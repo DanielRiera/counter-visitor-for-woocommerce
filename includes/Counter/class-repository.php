@@ -6,17 +6,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WCVisitor_Counter_Repository {
     private $wpdb;
     private $table_name;
+    private $live_table_name;
+    private $archive_table_name;
 
     public function __construct( wpdb $wpdb ) {
         $this->wpdb       = $wpdb;
         $this->table_name = $wpdb->prefix . 'wcvisitor_activity';
+        $this->live_table_name = $wpdb->prefix . 'wcvisitor_live';
+        $this->archive_table_name = $wpdb->prefix . 'wcvisitor_daily';
     }
 
     public function get_table_name() {
         return $this->table_name;
     }
 
-    public function create_table() {
+    public function create_table( $live_cutoff = null ) {
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
         $charset_collate = $this->wpdb->get_charset_collate();
@@ -36,9 +40,42 @@ class WCVisitor_Counter_Repository {
         ) {$charset_collate};";
 
         dbDelta( $sql );
+
+        dbDelta( "CREATE TABLE {$this->live_table_name} (
+            product_id bigint(20) unsigned NOT NULL,
+            visitor_hash char(64) NOT NULL,
+            viewed_at_gmt datetime NOT NULL,
+            PRIMARY KEY  (product_id, visitor_hash),
+            KEY viewed_at_gmt (viewed_at_gmt)
+        ) {$charset_collate};" );
+
+        dbDelta( "CREATE TABLE {$this->archive_table_name} (
+            product_id bigint(20) unsigned NOT NULL,
+            viewed_date date NOT NULL,
+            total_views bigint(20) unsigned NOT NULL,
+            PRIMARY KEY  (product_id, viewed_date)
+        ) {$charset_collate};" );
+
+        $this->wpdb->query( $this->wpdb->prepare(
+            "INSERT INTO {$this->live_table_name} (product_id, visitor_hash, viewed_at_gmt)
+            SELECT product_id, visitor_hash, MAX(viewed_at_gmt) FROM {$this->table_name}
+            WHERE viewed_at_gmt >= %s GROUP BY product_id, visitor_hash
+            ON DUPLICATE KEY UPDATE viewed_at_gmt = GREATEST({$this->live_table_name}.viewed_at_gmt, VALUES(viewed_at_gmt))",
+            $live_cutoff ?? gmdate( 'Y-m-d H:i:s', time() - 300 )
+        ) );
     }
 
-    public function record_visit( $product_id, $visitor_hash, $viewed_at_gmt ) {
+    public function record_visit( $product_id, $visitor_hash, $viewed_at_gmt, $refresh = false ) {
+        $this->wpdb->query( $this->wpdb->prepare(
+            "INSERT INTO {$this->live_table_name} (product_id, visitor_hash, viewed_at_gmt) VALUES (%d, %s, %s)
+            ON DUPLICATE KEY UPDATE viewed_at_gmt = VALUES(viewed_at_gmt)",
+            absint( $product_id ), $visitor_hash, $viewed_at_gmt
+        ) );
+
+        if ( $refresh ) {
+            return true;
+        }
+
         return false !== $this->wpdb->insert(
             $this->table_name,
             array(
@@ -52,7 +89,7 @@ class WCVisitor_Counter_Repository {
 
     public function count_active_visitors( $product_id, $cutoff_gmt ) {
         $sql = $this->wpdb->prepare(
-            "SELECT COUNT(DISTINCT visitor_hash) FROM {$this->table_name} WHERE product_id = %d AND viewed_at_gmt >= %s",
+            "SELECT COUNT(*) FROM {$this->live_table_name} WHERE product_id = %d AND viewed_at_gmt >= %s",
             absint( $product_id ),
             $cutoff_gmt
         );
@@ -60,18 +97,45 @@ class WCVisitor_Counter_Repository {
         return (int) $this->wpdb->get_var( $sql );
     }
 
-    public function get_product_stats( $product_id, $from_gmt = null ) {
+    public function delete_expired( $history_cutoff, $live_cutoff ) {
+        $archived = $this->wpdb->query( $this->wpdb->prepare(
+            "INSERT INTO {$this->archive_table_name} (product_id, viewed_date, total_views)
+            SELECT product_id, DATE(viewed_at_gmt), COUNT(*) FROM {$this->table_name}
+            WHERE viewed_at_gmt < %s GROUP BY product_id, DATE(viewed_at_gmt)
+            ON DUPLICATE KEY UPDATE total_views = GREATEST(total_views, VALUES(total_views))", $history_cutoff
+        ) );
+
+        if ( false === $archived ) {
+            return false;
+        }
+
+        $history_deleted = $this->wpdb->query( $this->wpdb->prepare(
+            "DELETE FROM {$this->table_name} WHERE viewed_at_gmt < %s LIMIT 5000", $history_cutoff
+        ) );
+        $live_deleted = $this->wpdb->query( $this->wpdb->prepare(
+            "DELETE FROM {$this->live_table_name} WHERE viewed_at_gmt < %s LIMIT 5000", $live_cutoff
+        ) );
+
+        return 5000 === $history_deleted || 5000 === $live_deleted;
+    }
+
+    public function get_archived_views() {
+        return (int) $this->wpdb->get_var( "SELECT SUM(total_views) FROM {$this->archive_table_name}" );
+    }
+
+    public function get_product_stats( $product_id, $from_gmt = null, $live = false ) {
+        $table_name = $live ? $this->live_table_name : $this->table_name;
         $product_id = absint( $product_id );
 
         if ( $from_gmt ) {
             $sql = $this->wpdb->prepare(
-                "SELECT COUNT(*) AS total_views, COUNT(DISTINCT visitor_hash) AS unique_visitors FROM {$this->table_name} WHERE product_id = %d AND viewed_at_gmt >= %s",
+                "SELECT COUNT(*) AS total_views, COUNT(DISTINCT visitor_hash) AS unique_visitors FROM {$table_name} WHERE product_id = %d AND viewed_at_gmt >= %s",
                 $product_id,
                 $from_gmt
             );
         } else {
             $sql = $this->wpdb->prepare(
-                "SELECT COUNT(*) AS total_views, COUNT(DISTINCT visitor_hash) AS unique_visitors FROM {$this->table_name} WHERE product_id = %d",
+                "SELECT COUNT(*) AS total_views, COUNT(DISTINCT visitor_hash) AS unique_visitors FROM {$table_name} WHERE product_id = %d",
                 $product_id
             );
         }
@@ -84,17 +148,18 @@ class WCVisitor_Counter_Repository {
         );
     }
 
-    public function get_period_summary( $from_gmt = null ) {
+    public function get_period_summary( $from_gmt = null, $live = false ) {
+        $table_name = $live ? $this->live_table_name : $this->table_name;
         if ( $from_gmt ) {
             $sql = $this->wpdb->prepare(
                 "SELECT COUNT(*) AS total_views, COUNT(DISTINCT visitor_hash) AS unique_visitors, COUNT(DISTINCT product_id) AS products, MAX(viewed_at_gmt) AS last_seen_gmt
-                FROM {$this->table_name}
+                FROM {$table_name}
                 WHERE viewed_at_gmt >= %s",
                 $from_gmt
             );
         } else {
             $sql = "SELECT COUNT(*) AS total_views, COUNT(DISTINCT visitor_hash) AS unique_visitors, COUNT(DISTINCT product_id) AS products, MAX(viewed_at_gmt) AS last_seen_gmt
-                FROM {$this->table_name}";
+                FROM {$table_name}";
         }
 
         $row = $this->wpdb->get_row( $sql, ARRAY_A );
@@ -107,12 +172,13 @@ class WCVisitor_Counter_Repository {
         );
     }
 
-    public function count_top_products( $from_gmt = null ) {
+    public function count_top_products( $from_gmt = null, $live = false ) {
+        $table_name = $live ? $this->live_table_name : $this->table_name;
         if ( $from_gmt ) {
             $sql = $this->wpdb->prepare(
                 "SELECT COUNT(*) FROM (
                     SELECT product_id
-                    FROM {$this->table_name}
+                    FROM {$table_name}
                     WHERE viewed_at_gmt >= %s
                     GROUP BY product_id
                 ) AS grouped_products",
@@ -121,7 +187,7 @@ class WCVisitor_Counter_Repository {
         } else {
             $sql = "SELECT COUNT(*) FROM (
                 SELECT product_id
-                FROM {$this->table_name}
+                FROM {$table_name}
                 GROUP BY product_id
             ) AS grouped_products";
         }
@@ -129,14 +195,15 @@ class WCVisitor_Counter_Repository {
         return (int) $this->wpdb->get_var( $sql );
     }
 
-    public function get_top_products( $from_gmt = null, $limit = 20, $offset = 0 ) {
+    public function get_top_products( $from_gmt = null, $limit = 20, $offset = 0, $live = false ) {
+        $table_name = $live ? $this->live_table_name : $this->table_name;
         $limit = max( 1, absint( $limit ) );
         $offset = max( 0, absint( $offset ) );
 
         if ( $from_gmt ) {
             $sql = $this->wpdb->prepare(
                 "SELECT product_id, COUNT(*) AS total_views, COUNT(DISTINCT visitor_hash) AS unique_visitors, MAX(viewed_at_gmt) AS last_seen_gmt
-                FROM {$this->table_name}
+                FROM {$table_name}
                 WHERE viewed_at_gmt >= %s
                 GROUP BY product_id
                 ORDER BY total_views DESC, unique_visitors DESC, last_seen_gmt DESC
@@ -148,7 +215,7 @@ class WCVisitor_Counter_Repository {
         } else {
             $sql = $this->wpdb->prepare(
                 "SELECT product_id, COUNT(*) AS total_views, COUNT(DISTINCT visitor_hash) AS unique_visitors, MAX(viewed_at_gmt) AS last_seen_gmt
-                FROM {$this->table_name}
+                FROM {$table_name}
                 GROUP BY product_id
                 ORDER BY total_views DESC, unique_visitors DESC, last_seen_gmt DESC
                 LIMIT %d OFFSET %d",

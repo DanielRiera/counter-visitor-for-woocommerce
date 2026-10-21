@@ -118,6 +118,7 @@ class WCVisitor_Admin_Controller {
         }
 
         update_option( WCVisitor_Settings::OPTION_TIMEOUT, max( 30, absint( wp_unslash( $_POST[ WCVisitor_Settings::OPTION_TIMEOUT ] ?? 300 ) ) ) );
+        update_option( WCVisitor_Settings::OPTION_RETENTION, max( 30, absint( wp_unslash( $_POST[ WCVisitor_Settings::OPTION_RETENTION ] ?? 90 ) ) ) );
         update_option( WCVisitor_Settings::OPTION_POSITION, sanitize_text_field( wp_unslash( $_POST[ WCVisitor_Settings::OPTION_POSITION ] ?? 'woocommerce_after_add_to_cart_button' ) ) );
         update_option( WCVisitor_Settings::OPTION_ICON, sanitize_text_field( wp_unslash( $_POST[ WCVisitor_Settings::OPTION_ICON ] ?? 'dashicons dashicons-visibility' ) ) );
         update_option( WCVisitor_Settings::OPTION_WEIGHT_BLOCK, absint( wp_unslash( $_POST[ WCVisitor_Settings::OPTION_WEIGHT_BLOCK ] ?? 0 ) ) );

@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class WCVisitor_Plugin {
-    const DB_VERSION = '1.0.0';
+    const DB_VERSION = '1.1.0';
 
     private $settings;
     private $repository;
@@ -29,11 +29,13 @@ class WCVisitor_Plugin {
     }
 
     public function activate() {
-        $this->repository->create_table();
+        $this->repository->create_table( gmdate( 'Y-m-d H:i:s', time() - $this->settings->get_timeout() ) );
         update_option( 'wcvisitor_db_version', self::DB_VERSION );
     }
 
     public function deactivate() {
+        wp_clear_scheduled_hook( 'wcvisitor_cleanup' );
+        wp_clear_scheduled_hook( 'wcvisitor_cleanup_batch' );
     }
 
     public function load_textdomain() {
@@ -53,13 +55,35 @@ class WCVisitor_Plugin {
 
     public function maybe_upgrade() {
         if ( get_option( 'wcvisitor_db_version' ) !== self::DB_VERSION ) {
-            $this->repository->create_table();
+            $this->repository->create_table( gmdate( 'Y-m-d H:i:s', time() - $this->settings->get_timeout() ) );
             update_option( 'wcvisitor_db_version', self::DB_VERSION );
+        }
+
+        if ( ! wp_next_scheduled( 'wcvisitor_cleanup' ) ) {
+            wp_schedule_event( time() + DAY_IN_SECONDS, 'daily', 'wcvisitor_cleanup' );
+        }
+    }
+
+    public function cleanup() {
+        if ( $this->service->cleanup() && ! wp_next_scheduled( 'wcvisitor_cleanup_batch' ) ) {
+            wp_schedule_single_event( time() + MINUTE_IN_SECONDS, 'wcvisitor_cleanup_batch' );
+        }
+    }
+
+    public function prepare_current_product() {
+        if ( ! function_exists( 'is_product' ) || ! is_product() ) {
+            return;
+        }
+
+        $product_id = get_queried_object_id();
+        if ( ! $this->service->should_use_js() ) {
+            $this->service->prepare_fake_counter( $product_id );
+            $this->service->record_product_view( $product_id );
         }
     }
 
     public function enqueue_assets() {
-        if ( ! is_product() ) {
+        if ( ! function_exists( 'is_product' ) || ! is_product() ) {
             return;
         }
 
@@ -77,6 +101,7 @@ class WCVisitor_Plugin {
                 'WCVisitorConfig',
                 array(
                     'url' => admin_url( 'admin-ajax.php' ),
+                    'record' => $this->service->should_use_js(),
                 )
             );
         }
@@ -99,7 +124,7 @@ class WCVisitor_Plugin {
     }
 
     public function maybe_record_current_product() {
-        if ( ! is_product() ) {
+        if ( ! function_exists( 'is_product' ) || ! is_product() ) {
             return;
         }
 
@@ -123,7 +148,7 @@ class WCVisitor_Plugin {
     }
 
     public function render_show_js() {
-        if ( ! is_product() ) {
+        if ( ! function_exists( 'is_product' ) || ! is_product() ) {
             return;
         }
 
@@ -138,7 +163,7 @@ class WCVisitor_Plugin {
     }
 
     public function render_live_js() {
-        if ( ! is_product() ) {
+        if ( ! function_exists( 'is_product' ) || ! is_product() ) {
             return;
         }
 
@@ -155,9 +180,7 @@ class WCVisitor_Plugin {
         $product_id = $product instanceof WC_Product ? $product->get_id() : 0;
         $text       = $this->service->get_after_price_text( $product_id );
 
-        if ( $text ) {
-            $price .= ' | ' . $text;
-        }
+        $price .= '<span class="wcv-price wcv-price-' . absint( $product_id ) . '">' . ( $text ? ' | ' . $text : '' ) . '</span>';
 
         return $price;
     }
@@ -187,12 +210,11 @@ class WCVisitor_Plugin {
 
         add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
         add_action( 'init', array( $this, 'maybe_upgrade' ) );
+        add_action( 'wcvisitor_cleanup', array( $this, 'cleanup' ) );
+        add_action( 'wcvisitor_cleanup_batch', array( $this, 'cleanup' ) );
+        add_action( 'template_redirect', array( $this, 'prepare_current_product' ) );
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
         add_shortcode( 'wcvisitor', array( $this, 'shortcode' ) );
-
-        if ( ! $this->service->should_use_js() ) {
-            add_action( 'woocommerce_before_single_product', array( $this, 'maybe_record_current_product' ) );
-        }
 
         if ( ! $this->service->should_use_js() && 'deactivate' !== $this->service->get_position() ) {
             add_action( $this->service->get_position(), array( $this, 'maybe_render_counter' ), $this->service->get_weight() );
