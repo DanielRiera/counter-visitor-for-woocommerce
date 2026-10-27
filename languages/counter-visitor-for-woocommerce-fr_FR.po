@@ -1,0 +1,488 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Counter Visitor for WooCommerce\n"
+"PO-Revision-Date: 2026-10-27 00:00+0000\n"
+"Last-Translator: Counter Visitor for WooCommerce\n"
+"Language-Team: Counter Visitor for WooCommerce\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: includes/Admin/class-admin-controller.php:28
+#: includes/Admin/class-admin-controller.php:29 views/options.php:290
+msgid "Visitor Counter"
+msgstr "Compteur de visiteurs"
+
+#: includes/Admin/class-admin-controller.php:37
+#: includes/Admin/class-admin-controller.php:38 views/stats.php:275
+msgid "Visitor Stats"
+msgstr "Statistiques des visiteurs"
+
+#: includes/Admin/class-admin-controller.php:90
+msgid "Live 2 min"
+msgstr "Vivre 2 min"
+
+#: includes/Admin/class-admin-controller.php:91
+msgid "Live 5 min"
+msgstr "En direct 5 min"
+
+#: includes/Admin/class-admin-controller.php:92
+msgid "All time"
+msgstr "Tout le temps"
+
+#: includes/Admin/class-admin-controller.php:93
+msgid "Last 24 hours"
+msgstr "Dernières 24 heures"
+
+#: includes/Admin/class-admin-controller.php:94
+msgid "Last 7 days"
+msgstr "7 derniers jours"
+
+#: includes/Admin/class-admin-controller.php:95
+msgid "Last 30 days"
+msgstr "30 derniers jours"
+
+#: includes/Admin/class-admin-controller.php:116
+#: includes/Admin/class-admin-controller.php:202
+#: includes/Admin/class-admin-controller.php:253
+#: includes/Admin/class-admin-controller.php:265
+msgid "Security validation failed."
+msgstr "La validation de sécurité a échoué."
+
+#: includes/Admin/class-admin-controller.php:137
+msgid "Settings saved."
+msgstr "Paramètres enregistrés."
+
+#: includes/Admin/class-admin-controller.php:158 views/options.php:278
+msgid "Counter Visitor for Woocommerce"
+msgstr "Compteur de visiteurs pour Woocommerce"
+
+#: includes/Admin/class-admin-controller.php:159
+#, php-format
+msgid "We found %d legacy visitor files from the previous storage system."
+msgstr ""
+"Nous avons trouvé %d fichiers de visiteurs hérités du système de stockage "
+"précédent."
+
+#: includes/Admin/class-admin-controller.php:160
+msgid ""
+"They are no longer used because the plugin now stores visits in the "
+"database, so deleting them helps free disk space and remove old data that is"
+" no longer needed."
+msgstr ""
+"Ils ne sont plus utilisés car le plugin stocke désormais les visites dans la"
+" base de données, donc les supprimer permet de libérer de l'espace disque et"
+" de supprimer les anciennes données qui ne sont plus nécessaires."
+
+#: includes/Admin/class-admin-controller.php:166
+msgid "Delete legacy files"
+msgstr "Supprimer les fichiers hérités"
+
+#: includes/Admin/class-admin-controller.php:171
+msgid "Dismiss notice"
+msgstr "Rejeter l'avis"
+
+#: includes/Admin/class-admin-controller.php:233
+#: includes/Admin/class-admin-controller.php:241
+msgid "An error has occurred, try again."
+msgstr "Une erreur s'est produite, réessayez."
+
+#: includes/Admin/class-admin-controller.php:246
+msgid "Welcome newsletter :)"
+msgstr "Newsletter de bienvenue :)"
+
+#: includes/Admin/class-admin-controller.php:258
+msgid "Legacy files notice dismissed."
+msgstr "Avis sur les fichiers hérités rejeté."
+
+#: includes/Admin/class-admin-controller.php:272
+msgid "Legacy directory not found."
+msgstr "Répertoire hérité introuvable."
+
+#: includes/Admin/class-admin-controller.php:279
+msgid "Legacy directory path is not valid."
+msgstr "Le chemin du répertoire hérité n'est pas valide."
+
+#: includes/Admin/class-admin-controller.php:284
+msgid "Unable to delete legacy files."
+msgstr "Impossible de supprimer les fichiers hérités."
+
+#: includes/Admin/class-admin-controller.php:289
+msgid "Legacy visitor files deleted successfully."
+msgstr "Les anciens fichiers de visiteurs ont été supprimés avec succès."
+
+#: includes/class-settings.php:49
+msgid "%n people are viewing this product"
+msgstr "%n personnes consultent ce produit"
+
+#: includes/class-settings.php:51
+msgid "1 user are viewing this product"
+msgstr "1 utilisateur regarde ce produit"
+
+#: views/options.php:279
+msgid ""
+"It is not a simple visitor counter, this counter is shown on each product "
+"with the number of users who are currently viewing that same product"
+msgstr ""
+"Ce n'est pas un simple compteur de visiteurs, ce compteur est affiché sur "
+"chaque produit avec le nombre d'utilisateurs qui consultent actuellement ce "
+"même produit"
+
+#: views/options.php:284
+msgid "Buy a Coffe? :)"
+msgstr "Acheter un café ? :)"
+
+#: views/options.php:291
+msgid ""
+"Configure how the visitor counter is displayed, refreshed and styled across "
+"your WooCommerce product pages."
+msgstr ""
+"Configurez la façon dont le compteur de visiteurs est affiché, actualisé et "
+"stylisé sur vos pages de produits WooCommerce."
+
+#: views/options.php:300
+msgid "Your site use cache system?"
+msgstr "Votre site utilise un système de cache ?"
+
+#: views/options.php:301
+msgid ""
+"Activate this option if your site uses some type of cache and add "
+"'wcvisitor' to the plugin cache exceptions"
+msgstr ""
+"Activez cette option si votre site utilise un certain type de cache et "
+"ajoutez « wcvisitor » aux exceptions du cache du plugin."
+
+#: views/options.php:311
+msgid "Show message after price"
+msgstr "Afficher le message après le prix"
+
+#: views/options.php:312
+msgid "Active this options for show counter after price with | separated"
+msgstr ""
+"Activez ces options pour afficher le compteur après le prix avec | séparé"
+
+#: views/options.php:322
+msgid "Hide counter if only one visitor"
+msgstr "Masquer le compteur si un seul visiteur"
+
+#: views/options.php:323
+msgid "Active this options for hide counter when only one visitor on product"
+msgstr ""
+"Activez ces options pour masquer le compteur lorsqu'un seul visiteur sur le "
+"produit"
+
+#: views/options.php:333
+msgid "Live Mode: Do you want to show users in real time?"
+msgstr "Mode Live : souhaitez-vous montrer aux utilisateurs en temps réel ?"
+
+#: views/options.php:334
+msgid ""
+"This option adds a call per user every X seconds, check its operation on "
+"your server, for security less than 5 seconds are not allowed. Use this "
+"option considering the resources of your server."
+msgstr ""
+"Cette option ajoute un appel par utilisateur toutes les X secondes, vérifiez"
+" son fonctionnement sur votre serveur, pour des raisons de sécurité moins de"
+" 5 secondes ne sont pas autorisées. Utilisez cette option en tenant compte "
+"des ressources de votre serveur."
+
+#: views/options.php:344
+msgid "How often to update the number of users in the product?"
+msgstr ""
+"À quelle fréquence mettre à jour le nombre d’utilisateurs dans le produit ?"
+
+#: views/options.php:345
+msgid "Seconds, min 5 seconds.. (Require Live Move)"
+msgstr "Secondes, min 5 secondes. (nécessite Live Move)"
+
+#: views/options.php:355
+msgid "Duration"
+msgstr "Durée"
+
+#: views/options.php:356
+msgid "Time since last activity of an users to be considered inactive"
+msgstr ""
+"Temps écoulé depuis la dernière activité d'un utilisateur considéré comme "
+"inactif"
+
+#: views/options.php:366
+msgid "Statistics retention (days)"
+msgstr "Conservation des statistiques (jours)"
+
+#: views/options.php:367
+msgid ""
+"Visits older than this period are deleted automatically. Statistics only "
+"include retained visits. Minimum 30 days."
+msgstr ""
+"Les visites antérieures à cette période sont automatiquement supprimées. Les"
+" statistiques incluent uniquement les visites retenues. Minimum 30 jours."
+
+#: views/options.php:377
+msgid "Position"
+msgstr "Position"
+
+#: views/options.php:382
+msgid "After cart button"
+msgstr "Bouton Après le panier"
+
+#: views/options.php:383
+msgid "Before cart button"
+msgstr "Bouton Avant le panier"
+
+#: views/options.php:384
+msgid "After product meta"
+msgstr "Après la méta produit"
+
+#: views/options.php:385
+msgid "Before product summary"
+msgstr "Avant le résumé du produit"
+
+#: views/options.php:386
+msgid "After product summary"
+msgstr "Après le résumé du produit"
+
+#: views/options.php:387
+msgid "Product Thumbnail (may not work)"
+msgstr "Vignette du produit (peut ne pas fonctionner)"
+
+#: views/options.php:388
+msgid "After short description"
+msgstr "Après une brève description"
+
+#: views/options.php:389
+msgid "Deactivate"
+msgstr "Désactiver"
+
+#: views/options.php:396
+msgid "Weight block"
+msgstr "Bloc de poids"
+
+#: views/options.php:397
+msgid "The heavier the weight, the lower the block is displayed"
+msgstr "Plus le poids est lourd, plus le bloc est affiché bas"
+
+#: views/options.php:407
+msgid "Fake Mode"
+msgstr "Mode faux"
+
+#: views/options.php:408
+msgid "Use Random numbers between from / to"
+msgstr "Utilisez des nombres aléatoires entre de / à"
+
+#: views/options.php:418
+msgid "Random Numbers"
+msgstr "Nombres aléatoires"
+
+#: views/options.php:419
+msgid "Need Fake mode, for visitors this value is saved for 25 minutes"
+msgstr ""
+"Besoin du mode Fake, pour les visiteurs cette valeur est enregistrée pendant"
+" 25 minutes"
+
+#: views/options.php:424
+msgid "From:"
+msgstr "Depuis:"
+
+#: views/options.php:428
+msgid "To:"
+msgstr "À:"
+
+#: views/options.php:436
+msgid "Icon"
+msgstr "Icône"
+
+#: views/options.php:437
+msgid ""
+"You can use always icon, fontawesome, only class name for example: fas fa-"
+"eye"
+msgstr ""
+"Vous pouvez utiliser toujours l'icône, fontawesome, uniquement le nom de la "
+"classe, par exemple : fas fa-eye"
+
+#: views/options.php:447
+msgid "¿Problem with Icon?"
+msgstr "¿Un problème avec Icon ?"
+
+#: views/options.php:448
+msgid "Load FontAwesome Library."
+msgstr "Chargez la bibliothèque FontAwesome."
+
+#: views/options.php:459
+msgid "Message more than one user"
+msgstr "Envoyez un message à plusieurs utilisateurs"
+
+#: views/options.php:460
+msgid "%n is replaced by number visitors"
+msgstr "%n est remplacé par le nombre de visiteurs"
+
+#: views/options.php:470
+msgid "Message only one user"
+msgstr "Envoyer un message à un seul utilisateur"
+
+#: views/options.php:480
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: views/options.php:488
+msgid "Do you want to receive the latest?"
+msgstr "Voulez-vous recevoir les dernières nouveautés ?"
+
+#: views/options.php:489
+msgid ""
+"Thank you very much for using our plugin, if you want to receive the latest "
+"news, offers, promotions, discounts, etc ... Sign up for our newsletter. :)"
+msgstr ""
+"Merci beaucoup d'utiliser notre plugin, si vous souhaitez recevoir les "
+"dernières nouveautés, offres, promotions, réductions, etc... Inscrivez-vous "
+"à notre newsletter. :)"
+
+#: views/options.php:494
+msgid "Required"
+msgstr "Requis"
+
+#: views/options.php:499
+msgid "Submit"
+msgstr "Soumettre"
+
+#: views/options.php:499
+msgid "Processing"
+msgstr "Traitement"
+
+#: views/options.php:505
+msgid "Need style?"
+msgstr "Besoin de style ?"
+
+#: views/options.php:506
+msgid "Enjoy! Paste this CSS code into your Customizer and edit as you like"
+msgstr ""
+"Apprécier! Collez ce code CSS dans votre Customizer et modifiez-le comme "
+"vous le souhaitez"
+
+#: views/stats.php:277
+msgid ""
+"Real statistics are only stored when Fake Mode is disabled. Use this panel "
+"to identify products with the most traffic and recurring interest."
+msgstr ""
+"Les vraies statistiques ne sont stockées que lorsque le mode Fake est "
+"désactivé. Utilisez ce panneau pour identifier les produits avec le plus de "
+"trafic et d'intérêt récurrent."
+
+#: views/stats.php:278
+#, php-format
+msgid "Statistics retention: %d days. Older visits are deleted automatically."
+msgstr ""
+"Conservation des statistiques : %d jours. Les visites plus anciennes sont "
+"automatiquement supprimées."
+
+#: views/stats.php:279
+#, php-format
+msgid ""
+"Archived page views: %s. Daily totals are kept after individual visits are "
+"deleted."
+msgstr ""
+"Pages vues archivées : %s. Les totaux quotidiens sont conservés après la "
+"suppression des visites individuelles."
+
+#: views/stats.php:292
+msgid "Tracked products"
+msgstr "Produits suivis"
+
+#: views/stats.php:294
+msgid "Products with registered traffic in this period"
+msgstr "Produits avec un trafic enregistré au cours de cette période"
+
+#: views/stats.php:297
+msgid "Total views"
+msgstr "Vues totales"
+
+#: views/stats.php:299
+msgid "All stored product views for the selected range"
+msgstr "Toutes les vues de produits stockées pour la gamme sélectionnée"
+
+#: views/stats.php:302
+msgid "Unique visitors"
+msgstr "Visiteurs uniques"
+
+#: views/stats.php:304
+msgid "Distinct anonymous visitors across tracked products"
+msgstr "Distinguer les visiteurs anonymes sur les produits suivis"
+
+#: views/stats.php:307
+msgid "Last activity"
+msgstr "Dernière activité"
+
+#: views/stats.php:309
+msgid "Live window in GMT"
+msgstr "Fenêtre en direct en GMT"
+
+#: views/stats.php:309
+msgid "Timestamp stored in GMT"
+msgstr "Horodatage stocké en GMT"
+
+#: views/stats.php:317
+msgid "Product"
+msgstr "Produit"
+
+#: views/stats.php:318
+msgid "Views"
+msgstr "Vues"
+
+#: views/stats.php:319
+msgid "Unique"
+msgstr "Unique"
+
+#: views/stats.php:320
+msgid "Status"
+msgstr "Statut"
+
+#: views/stats.php:321
+msgid "Last activity (GMT)"
+msgstr "Dernière activité (GMT)"
+
+#: views/stats.php:327
+msgid "No statistics available for this period."
+msgstr "Aucune statistique disponible pour cette période."
+
+#: views/stats.php:339
+msgid "Live now"
+msgstr "Vivez maintenant"
+
+#: views/stats.php:339
+msgid "Tracked"
+msgstr "Suivi"
+
+#: views/stats.php:343
+msgid "High traffic"
+msgstr "Trafic élevé"
+
+#: views/stats.php:345
+msgid "Growing"
+msgstr "Croissance"
+
+#: views/stats.php:347
+msgid "Emerging"
+msgstr "Émergent"
+
+#: views/stats.php:372
+msgid "View product"
+msgstr "Voir le produit"
+
+#: views/stats.php:397
+#, php-format
+msgid "Showing %1$d-%2$d of %3$d products"
+msgstr "Affichage de %1$d à %2$d de %3$d produits"
+
+#: views/stats.php:401
+msgid "Previous"
+msgstr "Précédent"
+
+#: views/stats.php:403
+#, php-format
+msgid "Page %1$d of %2$d"
+msgstr "Page %1$d sur %2$d"
+
+#: views/stats.php:405
+msgid "Next"
+msgstr "Suivant"

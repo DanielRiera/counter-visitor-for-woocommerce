@@ -1,0 +1,456 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Counter Visitor for WooCommerce\n"
+"PO-Revision-Date: 2026-10-27 00:00+0000\n"
+"Last-Translator: Counter Visitor for WooCommerce\n"
+"Language-Team: Counter Visitor for WooCommerce\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: includes/Admin/class-admin-controller.php:28
+#: includes/Admin/class-admin-controller.php:29 views/options.php:290
+msgid "Visitor Counter"
+msgstr "ビジターカウンター"
+
+#: includes/Admin/class-admin-controller.php:37
+#: includes/Admin/class-admin-controller.php:38 views/stats.php:275
+msgid "Visitor Stats"
+msgstr "訪問者の統計"
+
+#: includes/Admin/class-admin-controller.php:90
+msgid "Live 2 min"
+msgstr "ライブ 2 分"
+
+#: includes/Admin/class-admin-controller.php:91
+msgid "Live 5 min"
+msgstr "ライブ 5 分"
+
+#: includes/Admin/class-admin-controller.php:92
+msgid "All time"
+msgstr "ずっと"
+
+#: includes/Admin/class-admin-controller.php:93
+msgid "Last 24 hours"
+msgstr "過去 24 時間"
+
+#: includes/Admin/class-admin-controller.php:94
+msgid "Last 7 days"
+msgstr "過去 7 日間"
+
+#: includes/Admin/class-admin-controller.php:95
+msgid "Last 30 days"
+msgstr "過去 30 日間"
+
+#: includes/Admin/class-admin-controller.php:116
+#: includes/Admin/class-admin-controller.php:202
+#: includes/Admin/class-admin-controller.php:253
+#: includes/Admin/class-admin-controller.php:265
+msgid "Security validation failed."
+msgstr "セキュリティの検証に失敗しました。"
+
+#: includes/Admin/class-admin-controller.php:137
+msgid "Settings saved."
+msgstr "設定が保存されました。"
+
+#: includes/Admin/class-admin-controller.php:158 views/options.php:278
+msgid "Counter Visitor for Woocommerce"
+msgstr "Woocommerce のカウンター訪問者"
+
+#: includes/Admin/class-admin-controller.php:159
+#, php-format
+msgid "We found %d legacy visitor files from the previous storage system."
+msgstr "以前のストレージ システムから %d 個のレガシー ビジター ファイルが見つかりました。"
+
+#: includes/Admin/class-admin-controller.php:160
+msgid ""
+"They are no longer used because the plugin now stores visits in the "
+"database, so deleting them helps free disk space and remove old data that is"
+" no longer needed."
+msgstr ""
+"プラグインが訪問をデータベースに保存するようになったため、これらは使用されなくなりました。そのため、それらを削除すると、ディスク領域が解放され、不要になった古いデータが削除されます。"
+
+#: includes/Admin/class-admin-controller.php:166
+msgid "Delete legacy files"
+msgstr "レガシーファイルを削除する"
+
+#: includes/Admin/class-admin-controller.php:171
+msgid "Dismiss notice"
+msgstr "通知の却下"
+
+#: includes/Admin/class-admin-controller.php:233
+#: includes/Admin/class-admin-controller.php:241
+msgid "An error has occurred, try again."
+msgstr "エラーが発生しました。もう一度お試しください。"
+
+#: includes/Admin/class-admin-controller.php:246
+msgid "Welcome newsletter :)"
+msgstr "ウェルカムニュースレター:)"
+
+#: includes/Admin/class-admin-controller.php:258
+msgid "Legacy files notice dismissed."
+msgstr "レガシー ファイルの通知は無視されました。"
+
+#: includes/Admin/class-admin-controller.php:272
+msgid "Legacy directory not found."
+msgstr "従来のディレクトリが見つかりません。"
+
+#: includes/Admin/class-admin-controller.php:279
+msgid "Legacy directory path is not valid."
+msgstr "従来のディレクトリ パスは無効です。"
+
+#: includes/Admin/class-admin-controller.php:284
+msgid "Unable to delete legacy files."
+msgstr "レガシーファイルを削除できません。"
+
+#: includes/Admin/class-admin-controller.php:289
+msgid "Legacy visitor files deleted successfully."
+msgstr "従来の訪問者ファイルは正常に削除されました。"
+
+#: includes/class-settings.php:49
+msgid "%n people are viewing this product"
+msgstr "%n 人がこの商品を閲覧しています"
+
+#: includes/class-settings.php:51
+msgid "1 user are viewing this product"
+msgstr "1人のユーザーがこの商品を閲覧しています"
+
+#: views/options.php:279
+msgid ""
+"It is not a simple visitor counter, this counter is shown on each product "
+"with the number of users who are currently viewing that same product"
+msgstr "これは単純な訪問者カウンターではなく、各商品に現在同じ商品を閲覧しているユーザーの数が表示されます。"
+
+#: views/options.php:284
+msgid "Buy a Coffe? :)"
+msgstr "コーヒーを買いますか？ :)"
+
+#: views/options.php:291
+msgid ""
+"Configure how the visitor counter is displayed, refreshed and styled across "
+"your WooCommerce product pages."
+msgstr "WooCommerce 製品ページ全体で訪問者カウンターを表示、更新、スタイル設定する方法を構成します。"
+
+#: views/options.php:300
+msgid "Your site use cache system?"
+msgstr "あなたのサイトではキャッシュ システムを使用していますか?"
+
+#: views/options.php:301
+msgid ""
+"Activate this option if your site uses some type of cache and add "
+"'wcvisitor' to the plugin cache exceptions"
+msgstr ""
+"サイトで何らかのタイプのキャッシュを使用し、プラグイン キャッシュの例外に「wcvisitor」を追加する場合は、このオプションをアクティブ化します。"
+
+#: views/options.php:311
+msgid "Show message after price"
+msgstr "価格の後にメッセージを表示"
+
+#: views/options.php:312
+msgid "Active this options for show counter after price with | separated"
+msgstr "| を使用して価格の後にカウンターを表示するこのオプションをアクティブにします。別れた"
+
+#: views/options.php:322
+msgid "Hide counter if only one visitor"
+msgstr "訪問者が 1 人の場合はカウンターを非表示にする"
+
+#: views/options.php:323
+msgid "Active this options for hide counter when only one visitor on product"
+msgstr "製品の訪問者が 1 人だけの場合にカウンターを非表示にするには、このオプションをアクティブにします"
+
+#: views/options.php:333
+msgid "Live Mode: Do you want to show users in real time?"
+msgstr "ライブ モード: ユーザーにリアルタイムで表示しますか?"
+
+#: views/options.php:334
+msgid ""
+"This option adds a call per user every X seconds, check its operation on "
+"your server, for security less than 5 seconds are not allowed. Use this "
+"option considering the resources of your server."
+msgstr ""
+"このオプションでは、ユーザーごとに X 秒ごとに呼び出しを追加します。サーバー上でその動作を確認してください。セキュリティのため、5 "
+"秒未満の呼び出しは許可されません。サーバーのリソースを考慮して、このオプションを使用してください。"
+
+#: views/options.php:344
+msgid "How often to update the number of users in the product?"
+msgstr "製品のユーザー数を更新する頻度はどれくらいですか?"
+
+#: views/options.php:345
+msgid "Seconds, min 5 seconds.. (Require Live Move)"
+msgstr "秒、最小 5 秒.. (Live Move が必要)"
+
+#: views/options.php:355
+msgid "Duration"
+msgstr "間隔"
+
+#: views/options.php:356
+msgid "Time since last activity of an users to be considered inactive"
+msgstr "ユーザーの最後のアクティビティから非アクティブとみなされるまでの時間"
+
+#: views/options.php:366
+msgid "Statistics retention (days)"
+msgstr "統計の保持期間 (日)"
+
+#: views/options.php:367
+msgid ""
+"Visits older than this period are deleted automatically. Statistics only "
+"include retained visits. Minimum 30 days."
+msgstr "この期間より古い訪問は自動的に削除されます。統計には維持された訪問のみが含まれます。最低 30 日。"
+
+#: views/options.php:377
+msgid "Position"
+msgstr "位置"
+
+#: views/options.php:382
+msgid "After cart button"
+msgstr "カートボタン後"
+
+#: views/options.php:383
+msgid "Before cart button"
+msgstr "カートボタンの前"
+
+#: views/options.php:384
+msgid "After product meta"
+msgstr "プロダクトメタ後"
+
+#: views/options.php:385
+msgid "Before product summary"
+msgstr "商品概要の前に"
+
+#: views/options.php:386
+msgid "After product summary"
+msgstr "商品概要後"
+
+#: views/options.php:387
+msgid "Product Thumbnail (may not work)"
+msgstr "製品のサムネイル (機能しない場合があります)"
+
+#: views/options.php:388
+msgid "After short description"
+msgstr "簡単な説明の後"
+
+#: views/options.php:389
+msgid "Deactivate"
+msgstr "非アクティブ化"
+
+#: views/options.php:396
+msgid "Weight block"
+msgstr "ウェイトブロック"
+
+#: views/options.php:397
+msgid "The heavier the weight, the lower the block is displayed"
+msgstr "重みが重いほど、ブロックは下に表示されます"
+
+#: views/options.php:407
+msgid "Fake Mode"
+msgstr "フェイクモード"
+
+#: views/options.php:408
+msgid "Use Random numbers between from / to"
+msgstr "from / to の間の乱数を使用する"
+
+#: views/options.php:418
+msgid "Random Numbers"
+msgstr "乱数"
+
+#: views/options.php:419
+msgid "Need Fake mode, for visitors this value is saved for 25 minutes"
+msgstr "Fake モードが必要です。訪問者の場合、この値は 25 分間保存されます"
+
+#: views/options.php:424
+msgid "From:"
+msgstr "から："
+
+#: views/options.php:428
+msgid "To:"
+msgstr "に："
+
+#: views/options.php:436
+msgid "Icon"
+msgstr "アイコン"
+
+#: views/options.php:437
+msgid ""
+"You can use always icon, fontawesome, only class name for example: fas fa-"
+"eye"
+msgstr "常にアイコン、fontawesome、クラス名のみを使用できます。例: fas fa-eye"
+
+#: views/options.php:447
+msgid "¿Problem with Icon?"
+msgstr "¿アイコンに問題がありますか?"
+
+#: views/options.php:448
+msgid "Load FontAwesome Library."
+msgstr "FontAwesome ライブラリをロードします。"
+
+#: views/options.php:459
+msgid "Message more than one user"
+msgstr "複数のユーザーにメッセージを送信する"
+
+#: views/options.php:460
+msgid "%n is replaced by number visitors"
+msgstr "%n は訪問者数に置き換えられます"
+
+#: views/options.php:470
+msgid "Message only one user"
+msgstr "1 人のユーザーのみにメッセージを送信する"
+
+#: views/options.php:480
+msgid "Save"
+msgstr "保存"
+
+#: views/options.php:488
+msgid "Do you want to receive the latest?"
+msgstr "最新情報を受け取りたいですか?"
+
+#: views/options.php:489
+msgid ""
+"Thank you very much for using our plugin, if you want to receive the latest "
+"news, offers, promotions, discounts, etc ... Sign up for our newsletter. :)"
+msgstr ""
+"最新のニュース、オファー、プロモーション、割引などを受け取りたい場合は、当社のプラグインをご利用いただき誠にありがとうございます...ニュースレターにご登録ください。"
+" :)"
+
+#: views/options.php:494
+msgid "Required"
+msgstr "必須"
+
+#: views/options.php:499
+msgid "Submit"
+msgstr "提出する"
+
+#: views/options.php:499
+msgid "Processing"
+msgstr "処理"
+
+#: views/options.php:505
+msgid "Need style?"
+msgstr "スタイルが必要ですか?"
+
+#: views/options.php:506
+msgid "Enjoy! Paste this CSS code into your Customizer and edit as you like"
+msgstr "楽しむ！この CSS コードをカスタマイザーに貼り付け、必要に応じて編集します"
+
+#: views/stats.php:277
+msgid ""
+"Real statistics are only stored when Fake Mode is disabled. Use this panel "
+"to identify products with the most traffic and recurring interest."
+msgstr ""
+"実際の統計は、Fake Mode "
+"が無効になっている場合にのみ保存されます。このパネルを使用して、トラフィックが最も多く、定期的な関心が高い製品を特定します。"
+
+#: views/stats.php:278
+#, php-format
+msgid "Statistics retention: %d days. Older visits are deleted automatically."
+msgstr "統計の保持期間: %d 日。古い訪問は自動的に削除されます。"
+
+#: views/stats.php:279
+#, php-format
+msgid ""
+"Archived page views: %s. Daily totals are kept after individual visits are "
+"deleted."
+msgstr "アーカイブされたページビュー: %s。日次合計は、個々の訪問が削除された後も保持されます。"
+
+#: views/stats.php:292
+msgid "Tracked products"
+msgstr "追跡対象製品"
+
+#: views/stats.php:294
+msgid "Products with registered traffic in this period"
+msgstr "この期間にトラフィックが登録された製品"
+
+#: views/stats.php:297
+msgid "Total views"
+msgstr "合計視聴回数"
+
+#: views/stats.php:299
+msgid "All stored product views for the selected range"
+msgstr "選択した範囲のすべての保存された製品ビュー"
+
+#: views/stats.php:302
+msgid "Unique visitors"
+msgstr "ユニークな訪問者"
+
+#: views/stats.php:304
+msgid "Distinct anonymous visitors across tracked products"
+msgstr "追跡対象製品全体にわたる個別の匿名訪問者"
+
+#: views/stats.php:307
+msgid "Last activity"
+msgstr "最後のアクティビティ"
+
+#: views/stats.php:309
+msgid "Live window in GMT"
+msgstr "GMT のライブウィンドウ"
+
+#: views/stats.php:309
+msgid "Timestamp stored in GMT"
+msgstr "GMT で保存されたタイムスタンプ"
+
+#: views/stats.php:317
+msgid "Product"
+msgstr "製品"
+
+#: views/stats.php:318
+msgid "Views"
+msgstr "ビュー"
+
+#: views/stats.php:319
+msgid "Unique"
+msgstr "個性的"
+
+#: views/stats.php:320
+msgid "Status"
+msgstr "状態"
+
+#: views/stats.php:321
+msgid "Last activity (GMT)"
+msgstr "最終アクティビティ (GMT)"
+
+#: views/stats.php:327
+msgid "No statistics available for this period."
+msgstr "この期間に利用可能な統計はありません。"
+
+#: views/stats.php:339
+msgid "Live now"
+msgstr "今を生きる"
+
+#: views/stats.php:339
+msgid "Tracked"
+msgstr "追跡済み"
+
+#: views/stats.php:343
+msgid "High traffic"
+msgstr "交通量が多い"
+
+#: views/stats.php:345
+msgid "Growing"
+msgstr "成長する"
+
+#: views/stats.php:347
+msgid "Emerging"
+msgstr "新興"
+
+#: views/stats.php:372
+msgid "View product"
+msgstr "製品を見る"
+
+#: views/stats.php:397
+#, php-format
+msgid "Showing %1$d-%2$d of %3$d products"
+msgstr "%3$d 製品中 %1$d-%2$d を表示しています"
+
+#: views/stats.php:401
+msgid "Previous"
+msgstr "前の"
+
+#: views/stats.php:403
+#, php-format
+msgid "Page %1$d of %2$d"
+msgstr "ページ %1$d/%2$d"
+
+#: views/stats.php:405
+msgid "Next"
+msgstr "次"

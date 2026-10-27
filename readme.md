@@ -1,77 +1,97 @@
 === Counter live visitors for WooCommerce ===
 Contributors: DanielRiera
 Donate Link: https://www.paypal.com/donate/?hosted_button_id=EZ67DG78KMXWQ
-Tags: counter, woocommerce, visitor, live, visitor counter
+Tags: woocommerce, live visitors, visitor counter, social proof, product views
 Requires at least: 6.8
 Tested up to: 7.1.3
 Requires PHP: 8.0
 Requires Plugins: woocommerce
 WC requires at least: 3.0
 WC tested up to: 10.6.1
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Show user count on product
+Display live visitor counts on WooCommerce product pages to add social proof and help customers make buying decisions.
  
 == Description ==
 
-# 🎉+1.000 Active installations!!🎉
+Counter Live Visitors for WooCommerce displays how many customers are currently viewing each product. Use this live visitor counter to add social proof to your WooCommerce product pages and create confidence around popular products.
 
-> ### Important NOTE
-> If your website uses a cache plugin, you can activate the option 'Your site use cache system?', This option will enable an additional call to show the block of active users :)
+The counter tracks views per product, so customers see the number of visitors looking at the same item. Configure its placement, text, update behavior, and display settings from **WooCommerce → Visitor Counter**.
 
-It is not a simple visitor counter, this counter is shown on each product with the number of users who are currently viewing that same product
+### Features
 
-Navigate to Woocommerce -> Visitor Counter in the administration menu for configure
+* Show the number of current visitors on individual WooCommerce product pages.
+* Add social proof near the add-to-cart button, after the short description, after the price, or at another supported WooCommerce position.
+* Use Live Mode to refresh the visitor count automatically.
+* Enable cache compatibility for sites using a page cache.
+* Hide the counter when only one visitor is viewing a product.
+* Use Fake Mode with a configurable range when needed.
+* Insert the counter anywhere with the `[wcvisitor]` shortcode.
+* Customize the messages shown for one visitor and multiple visitors.
+* View visitor statistics and choose how long detailed statistics are retained.
+* Available in English and Spanish.
 
-You use Elementor or other page builder?
+### Cache compatibility
 
-Try [wcvisitor] shortcode, available from 1.1.2 version
+If your WordPress site uses a cache plugin, activate **Your site uses a cache system?** in the plugin settings and add `wcvisitor` to your cache plugin exclusions. This lets the visitor block load separately and show the current count.
 
-Since version 1.2.0 the ***msgone*** and ***msgmore*** parameters are included (optionals) to customize the message for each shortcode, example:
+### Shortcode for Elementor and page builders
+
+Use the `[wcvisitor]` shortcode in Elementor, Gutenberg, or any WordPress page builder that supports shortcodes. You can customize the messages for one or more visitors:
 
 ```
 [wcvisitor msgOne="Only One" msgMore="Now %n users on this product"]
 ```
 
+Use `%n` in `msgMore` to display the current number of visitors.
+
 == Installation ==
 
 1. Upload the plugin files to the /wp-content/plugins/plugin-name directory, or install the plugin through the WordPress plugins screen directly.
-2. Activate the plugin through the ‘Plugins’ screen in WordPress
-3. Enjoy!
+2. Activate the plugin through the **Plugins** screen in WordPress.
+3. Go to **WooCommerce → Visitor Counter** to configure the counter.
+4. Visit a product page to see the live visitor counter.
  
 == Frequently Asked Questions ==
 
-= My site use cache =
+= Does this plugin work with cache plugins? =
 
-If your website uses a cache plugin, you can activate the option 'Your site use cache system?', This option will enable an additional call to show the block of active users :)
+Yes. Activate **Your site uses a cache system?** in the plugin settings and add `wcvisitor` to the cache exclusions. The plugin will load the visitor counter separately so it can show the current number of visitors.
 
-= Shortcode =
+= Can I use the visitor counter with Elementor or another page builder? =
 
-Yes! [wcvisitor]
+Yes. Add the `[wcvisitor]` shortcode wherever you want the live visitor count to appear.
 
-Params:
-msgone (Only one user)
-msgmore (More than one user)
+You can customize its messages with `msgOne` for one visitor and `msgMore` for multiple visitors. Use `%n` in `msgMore` for the current count.
 
-= Configuration =
+= Where can I configure the WooCommerce visitor counter? =
 
-Navigate to Woocommerce -> Visitor Counter in the administration menu, from there you can configure cache, language, etc.
+Go to **WooCommerce → Visitor Counter**. There you can configure the position, display order, cache compatibility, Live Mode, Fake Mode, messages, and other settings.
 
-= Live Mode (Disabled for default)=
+= What is Live Mode? =
 
-The plugin can update the number of current visitors every x seconds, take into account the resources of your server, as a minimum and for security the seconds are set to 5, you can modify this from the plugin options.
+Live Mode refreshes the number of current visitors automatically. It is disabled by default. The minimum refresh interval is 5 seconds; choose an interval that suits your server resources.
 
-= FontAwesome =
+= Can I hide the counter when only one customer is viewing a product? =
 
-Added the option for the plugin to add FontAwesome to your website, for example if your theme doesn't.
+Yes. Enable the option to hide the counter when there is only one visitor.
 
-= Weight Block Option =
+= Does the plugin include an icon library? =
 
-The heavier the weight, the lower the block is displayed
+The plugin can load Font Awesome if your theme does not already provide it.
+
+= What does the display order setting do? =
+
+The display order controls where the visitor counter appears when multiple elements share the same WooCommerce position. A higher number displays the counter later.
 
 == Changelog ==
+
+= 1.4.2 =
+* Update compatibility information.
+* Add German, French, Italian, Brazilian Portuguese, Dutch, Polish, Russian, and Japanese translations.
+* New brand style
 
 = 1.4.1 =
 * Fix visitor tracking with cache enabled and refresh activity in Live Mode without inflating page views.
