@@ -8,7 +8,7 @@ Requires PHP: 8.0
 Requires Plugins: woocommerce
 WC requires at least: 3.0
 WC tested up to: 10.6.1
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -88,10 +88,14 @@ The display order controls where the visitor counter appears when multiple eleme
 
 == Changelog ==
 
+= 1.4.3 =
+* Fix WordPress.org deployment for plugin banners and icons.
+
 = 1.4.2 =
 * Update compatibility information.
 * Add German, French, Italian, Brazilian Portuguese, Dutch, Polish, Russian, and Japanese translations.
 * New brand style
+* Deploy WordPress.org banners and icons from the plugin assets directory.
 
 = 1.4.1 =
 * Fix visitor tracking with cache enabled and refresh activity in Live Mode without inflating page views.
